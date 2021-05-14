@@ -65,4 +65,30 @@ public:
 		return false;
 
 	}
+
+	bool search(Node<T>*& temp, int key)
+	{
+		int index = key % size;
+		// Checking if the key is found
+		if (!arr[index])
+			return false;
+		Node<T>* ptr = arr[index];
+		if (ptr->getKey() == key)
+		{
+			//Assigning the node with chosen key to temp(sent by reference from outside the class)
+			temp = ptr;
+			return true;
+		}
+		while (ptr->getNext())
+		{
+			if (ptr->getNext()->getKey() == key)
+			{
+				temp = ptr->getNext();
+				return true;
+			}
+			ptr = ptr->getNext();
+		}
+		//Key is not found
+		return false;
+	}
 };
