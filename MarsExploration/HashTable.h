@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-
+#include "Node.h"
 
 template <typename T, int size>
 class HashTable
