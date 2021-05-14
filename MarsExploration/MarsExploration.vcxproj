@@ -18,6 +18,28 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cancellation.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="Formulation.h" />
+    <ClInclude Include="HashTable.h" />
+    <ClInclude Include="MarsStation.h" />
+    <ClInclude Include="Mission.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="Promotion.h" />
+    <ClInclude Include="Rover.h" />
+    <ClInclude Include="UI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Cancellation.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="Formulation.cpp" />
+    <ClCompile Include="MarsStation.cpp" />
+    <ClCompile Include="Mission.cpp" />
+    <ClCompile Include="Promotion.cpp" />
+    <ClCompile Include="Rover.cpp" />
+    <ClCompile Include="UI.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -138,13 +160,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="MarsStation.h" />
-    <ClInclude Include="Mission.h" />
-    <ClInclude Include="Rover.h" />
-    <ClInclude Include="UI.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
