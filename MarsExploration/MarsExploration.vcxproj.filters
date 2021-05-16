@@ -48,6 +48,9 @@
     <ClInclude Include="HashTable.h">
       <Filter>DataStructure</Filter>
     </ClInclude>
+    <ClInclude Include="PriQ.h">
+      <Filter>DataStructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MarsStation.cpp">

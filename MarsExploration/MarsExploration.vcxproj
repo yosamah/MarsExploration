@@ -26,6 +26,7 @@
     <ClInclude Include="MarsStation.h" />
     <ClInclude Include="Mission.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="PriQ.h" />
     <ClInclude Include="Promotion.h" />
     <ClInclude Include="Rover.h" />
     <ClInclude Include="UI.h" />

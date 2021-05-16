@@ -15,6 +15,12 @@ public:
 		next = NULL;
 		key = -1;
 	}
+	Node(T* d, int k)
+	{
+		data = d;
+		next = NULL;
+		key = k;
+	}
 	void setData(T* d)
 	{
 		// Must overlooad(=) at user-defined classes "Copy Constructor".
