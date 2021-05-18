@@ -51,6 +51,12 @@
     <ClInclude Include="PriQ.h">
       <Filter>DataStructure</Filter>
     </ClInclude>
+    <ClInclude Include="LinkedQueue.h">
+      <Filter>DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueADT.h">
+      <Filter>DataStructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MarsStation.cpp">

@@ -9,13 +9,12 @@ class Node
 	int key;
 	Node<T>* next;
 public:
-	Node(T* d)
+	Node()
 	{
-		data = d;
 		next = NULL;
 		key = -1;
 	}
-	Node(T* d, int k)
+	Node(T* d, int k = -1)
 	{
 		data = d;
 		next = NULL;
