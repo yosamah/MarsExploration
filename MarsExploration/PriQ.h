@@ -13,7 +13,7 @@ public:
 	//Constructor
 	PriQ()
 	{
-		Head = NULL;
+		Head = NULL; //Amr Aho
 	}
 
 	//Function that enqueues the elemtents sorted according to the key
