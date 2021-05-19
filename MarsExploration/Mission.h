@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "Rover.h"
 
 class Mission
@@ -6,9 +7,13 @@ class Mission
 private:
 	Rover* rover;
 	int ID;
-	float TargetLocation;
-	float MissionDuration;
+	int TargetLocation;
+	int MissionDuration;
 	int Significance;
+
+public:
+	/* Constructor */
+	Mission(int , int, int, int ,Rover* r = NULL);
 
 };
 
