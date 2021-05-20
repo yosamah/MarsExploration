@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include "PriQ.h"
-#include "LinkedQueue.h"
+#include "Queue.h"
 #include "Event.h"
 #include "HashTable.h"
 #include "Mission.h"
@@ -16,11 +16,10 @@ private:
 	PriQ<Rover*> RoversInCheckUp;
 	PriQ<Mission*> InExecution;
 	PriQ<Mission*> EmeregncyMissions;
-	LinkedQueue<Rover*> PolarRovers;
-	LinkedQueue<Mission*> PolarMissions;
-	LinkedQueue<Mission*> CompletedMissions;
-	LinkedQueue<Event*> EventList;
-	
-	LinkedQueue<int> MountainousOrder;
+	Queue<Rover*> PolarRovers;
+	Queue<Mission*> PolarMissions;
+	Queue<Mission*> CompletedMissions;
+	Queue<Event*> EventList;
+	Queue<int> MountainousOrder;
 	HashTable<Mission*,100> MountainousMissions;
 };
