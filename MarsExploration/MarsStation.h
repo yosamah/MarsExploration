@@ -12,7 +12,7 @@ class MarsStation
 {
 private:
 
-	PriQ<Rover*> AvaiableRovers[3];
+	PriQ<Rover*> AvaiableRovers[6];
 	PriQ<Rover*> RoversInCheckUp;
 	PriQ<Mission*> InExecution;
 	PriQ<Mission*> EmeregncyMissions;

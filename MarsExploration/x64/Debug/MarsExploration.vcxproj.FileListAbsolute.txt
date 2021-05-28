@@ -1,2 +1,0 @@
-E:\Sophomore\Semester2\Data Structure\Project\MarsExploration\MarsExploration\x64\Debug\MarsExploration.exe
-E:\Sophomore\Semester2\Data Structure\Project\MarsExploration\MarsExploration\x64\Debug\MarsExploration.pdb

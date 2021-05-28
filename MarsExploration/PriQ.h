@@ -43,19 +43,24 @@ public:
 	}
 
 	//Function the takes out elements out of the queue
-	bool dequeue(T* frntEntry, int& frntKey)
+	bool dequeue(Node<T>*& temp)
 	{
 		if (isEmpty())
 			return false;
 
-		Node<T>* nodeToDeletePtr = Head;
-		frntEntry = Head->getData();
-		frntKey = Head->getKey();
+		temp = Head;
 		Head = Head->getNext();
+		return true;
 
-		// Free memory reserved for the dequeued node
-		delete nodeToDeletePtr;
+	}
 
+	//Function the checks the first element.
+	bool peek(Node<T>*& temp)
+	{
+		if (isEmpty())
+			return false;
+
+		temp = Head;
 		return true;
 
 	}

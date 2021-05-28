@@ -4,14 +4,23 @@
 class Rover
 {
 private:
-	char rovertype;
-	int checkupduration;
-	int zbeed;
+	char RoverType;
+	int CheckUpDuration;
+	int Speed;
 	//bool available;
 
 public:
 	/* Constructor */
-	Rover(char ,int , int);
+	Rover(char roverType,int checkUpDuration, int speed);
 
-	/* Setters w getters b2a yally ht3ml al functions ya rab yb2o sa7 a7snlak(ek) */
+	void setRoverType(char);
+	char getRoverType();
+
+	void setCheckUpDuration(int);
+	int getCheckUpDuration();
+
+	void setSpeed(int);
+	int getSpeed();
+
+
 };

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Action.h" />
     <ClInclude Include="Cancellation.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Formulation.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
     <ClCompile Include="Cancellation.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Formulation.cpp" />

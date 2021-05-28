@@ -6,14 +6,36 @@ class Mission
 {
 private:
 	Rover* rover;
+	char MissionType;
 	int ID;
 	int TargetLocation;
 	int MissionDuration;
 	int Significance;
-
+	int formulationDate;
 public:
 	/* Constructor */
-	Mission(int , int, int, int ,Rover* r = NULL);
+	Mission(char MissionType, int ID, int TargetLocation, int formulationDate, int Significance,Rover* r = NULL);
+
+	void setRover(Rover*);
+	Rover* getRover();
+
+	int getID();
+	void setID(int i);
+
+	int getTargetLocation();
+	void setTargetLocation(int);
+
+	int getMissionDuration();
+	void setMissionDuration(int);
+
+	int getSignificance();
+	void setSignificance(int);
+
+	int getFormulationDate();
+	void setFormulationDate(int);
+
+	char getMissionType();
+	void setMissionType(char);
 
 };
 
