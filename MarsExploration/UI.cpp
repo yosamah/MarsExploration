@@ -7,7 +7,7 @@ UI::UI(MarsStation* Mars)
 	pMars = Mars;
 }
 
-void UI::Read(ifstream& file)  //file.close() //file.eof()
+void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eof()
 {
 	/*The type of each rover*/
 	int NumOfPolarRover;
@@ -59,6 +59,7 @@ void UI::Read(ifstream& file)  //file.close() //file.eof()
 			file >> ED >> ID >> Location >> MDUR >> Signif;
 
 			Formulation* F = new Formulation(MissionType,Location,MDUR,Signif,ID,ED);
+			eventList.enqueue(F);
 
 		}
 		else if (EventType == 'X')

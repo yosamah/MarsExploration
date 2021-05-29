@@ -1,5 +1,5 @@
 #include "Cancellation.h"
 
 
-void Cancellation::Execute(HashTable<Mission*>* Mountainous)
+void Execute(HashTable<Mission>& Mountainous, PriQ<Mission>& Emergency, Queue<int>& MountainousSort, Queue<Mission>& Polar)
 {}

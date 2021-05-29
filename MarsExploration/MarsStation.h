@@ -7,6 +7,7 @@
 #include "Mission.h"
 #include "Rover.h"
 #include "UI.h"
+#include "Action.h"
 
 class MarsStation
 {

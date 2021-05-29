@@ -11,6 +11,8 @@
 
 class Action
 {
+
+public:
 	/*This function is checking the waiting lists and the number of missions yhat need to be done in each list*/
 	void checkWaiting(HashTable<Mission>& Mountainous, PriQ<Mission>& Emergency, Queue<int>& MountainousSort, Queue<Mission>& Polar, int d, PriQ<Rover>* roverArray);
 

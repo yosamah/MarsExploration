@@ -18,7 +18,7 @@ public:
 	
 	/* Constructor */
 	Event(int, int);
-
+	int getED();//get event date
 	/* Check and execute to create mission and add it to the appropriate list */
-	virtual void Execute(HashTable<Mission>* Mountainous = NULL, PriQ<Mission>* Emergency = NULL, Queue<int>* MountainousSort = NULL, Queue<Mission>* Polar = NULL) = 0;  //Mtnsosh fi al call t7oto "&"
+	virtual void Execute(HashTable<Mission>& Mountainous, PriQ<Mission>& Emergency, Queue<int>& MountainousSort, Queue<Mission>& Polar) = 0;  //Mtnsosh fi al call t7oto "&"
 };

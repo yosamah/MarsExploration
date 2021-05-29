@@ -4,6 +4,7 @@ using namespace std;
 
 int main()
 {
-
+	MarsStation mainP;
+	mainP.Execute();
 	return 0;
 }
