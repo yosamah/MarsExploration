@@ -22,4 +22,7 @@ private:
 	Queue<Event*> EventList;
 	Queue<int> MountainousOrder;
 	HashTable<Mission*,100> MountainousMissions;
+	
+public:
+
 };

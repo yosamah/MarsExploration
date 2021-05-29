@@ -6,7 +6,7 @@ Mission::Mission(char MT, int id, int TL, int FD, int S, Rover* r = NULL)
 {
 	ID = id;
 	TargetLocation = TL;
-	formulationDate = FD;
+	FormulationDate = FD;
 	Significance = S;
 	rover = r;
 	MissionType = MT;
@@ -57,11 +57,11 @@ void Mission::setSignificance(int s)
 
 int Mission::getFormulationDate()
 {
-	return formulationDate;
+	return FormulationDate;
 }
 void Mission::setFormulationDate(int FD)
 {
-	formulationDate = FD;
+	FormulationDate = FD;
 }
 char  Mission::getMissionType()
 {
