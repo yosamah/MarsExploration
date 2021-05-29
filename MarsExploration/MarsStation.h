@@ -22,7 +22,6 @@ private:
 	Queue<Event*> EventList;
 	Queue<int> MountainousOrder;
 	HashTable<Mission*,100> MountainousMissions;
-
 public:
 	void SetAvailableRovers(int , int , int , int, int, int, int,int , int);
 

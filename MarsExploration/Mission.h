@@ -14,7 +14,8 @@ private:
 	int FormulationDate;
 public:
 	/* Constructor */
-	Mission(char MissionType, int ID, int TargetLocation, int formulationDate, int Significance,Rover* r = NULL);
+	Mission(char MT,int nID, int TL, int FD, int Signifi,Rover* r = NULL);//asamy el parameters
+
 
 	void setRover(Rover*);
 	Rover* getRover();

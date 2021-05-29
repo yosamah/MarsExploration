@@ -10,9 +10,12 @@
 
 class Event
 {
+protected:
 	int EventDay;
 	int MissionID;
+
 public:
+	
 	/* Constructor */
 	Event(int, int);
 
