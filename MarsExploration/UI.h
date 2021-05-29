@@ -1,11 +1,11 @@
 #pragma once
 #include <fstream>
 #include <iostream>
-#include "MarsStation.h"
-#include "Event.h"
-#include "Formulation.h"
-#include "Cancellation.h"
-#include "Formulation.h"
+
+
+class MarsStation;
+class Event;
+
 
 using namespace std;
 

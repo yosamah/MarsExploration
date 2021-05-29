@@ -11,18 +11,18 @@ void Formulation::Execute(HashTable<Mission*>* Mountainous, PriQ<Mission*>* Emer
 {
     if (MissionType == 'M')
     {
-        Mission* Mount = new Mission(MissionType, MissionID,TargetLocation,MissionDuration,Significance);
+        Mission* Mount = new Mission(MissionType, MissionID,TargetLocation,MissionDuration, EventDay, Significance);
         Mountainous->insert(&Mount,Significance);
         MountainousSort->enqueue(& MissionID);
     }
     else if (MissionType == 'P')
     {
-        Mission* Pola = new Mission(MissionType, MissionID, TargetLocation, MissionDuration, Significance);
+        Mission* Pola = new Mission(MissionType, MissionID, TargetLocation, MissionDuration, EventDay,Significance);
         Polar->enqueue(&Pola);
     }
     else if (MissionType == 'E')
     {
-        Mission* Emerg = new Mission(MissionType, MissionID, TargetLocation, MissionDuration, Significance);
+        Mission* Emerg = new Mission(MissionType, MissionID, TargetLocation, MissionDuration, EventDay, Significance);
         Emergency->enqueue(&Emerg,Significance);
     }
 
