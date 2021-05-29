@@ -11,6 +11,7 @@ Mission::Mission(char MT, int id, int TL, int MD, int FD, int S, Rover* r)
 	rover = r;
 	MissionType = MT;
 	MissionDuration = MD;
+	WaitingDays = 0;
 }
 void Mission::setRover(Rover* r)
 {
@@ -71,4 +72,9 @@ char  Mission::getMissionType()
 void  Mission::setMissionType(char MT)
 {
 	MissionType = MT;
+}
+
+void  Mission::increamentWaitingDays()
+{
+	WaitingDays++;
 }

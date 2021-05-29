@@ -12,6 +12,7 @@ private:
 	int MissionDuration;
 	int Significance;
 	int FormulationDate;
+	int WaitingDays;
 public:
 	/* Constructor */
 	Mission(char MissionType,int ID, int TargetLocation, int MissionDuration, int FormulationDate, int Significance,Rover* r = NULL);//asamy el parameters
@@ -38,5 +39,6 @@ public:
 	char getMissionType();
 	void setMissionType(char);
 
+	void increamentWaitingDays();
 };
 
