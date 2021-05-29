@@ -1,17 +1,14 @@
 #pragma once
 #include <fstream>
 #include <iostream>
-
-
+using namespace std;
 class MarsStation;
 class Event;
 
 
-using namespace std;
-
 class UI
 {
-	MarsStation* pMars;
+	MarsStation *pMars;
 
 public:
 	UI(MarsStation* Mars);

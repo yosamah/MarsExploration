@@ -30,10 +30,10 @@ void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int
 
 void MarsStation::Execute()
 {
-	UI* input;
+	UI input(this);
 	ifstream file;
 	file.open("TEST.txt");
-	input->Read(file);
+	input.Read(file);
 	while (!EventList.isEmpty())
 	{
 		Node<Event>* tempNode;

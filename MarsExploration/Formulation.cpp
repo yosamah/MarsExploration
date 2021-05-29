@@ -27,3 +27,8 @@ void Formulation::Execute(HashTable<Mission>* Mountainous, PriQ<Mission>* Emerge
     }
 
 }
+
+int Formulation::getED()
+{
+    return EventDay;
+}
