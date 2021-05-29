@@ -2,7 +2,7 @@
 
 
 // KHALOO BAlKO eno ehna bndkhal el formulation date msh el mission duration 3ashan msh hane3rafo ella ba3d man-set el rover we da msh men el katwa el olla
-Mission::Mission(char MT, int id, int TL, int FD, int S, Rover* r = NULL)
+Mission::Mission(char MT, int id, int TL, int MD, int FD, int S, Rover* r)
 {
 	ID = id;
 	TargetLocation = TL;
@@ -10,6 +10,7 @@ Mission::Mission(char MT, int id, int TL, int FD, int S, Rover* r = NULL)
 	Significance = S;
 	rover = r;
 	MissionType = MT;
+	MissionDuration = MD;
 }
 void Mission::setRover(Rover* r)
 {

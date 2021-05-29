@@ -1,4 +1,6 @@
 #include "UI.h"
+#include "MarsStation.h"
+#include "Formulation.h"
 
 UI::UI(MarsStation* Mars)
 {
@@ -57,6 +59,7 @@ void UI::Read(ifstream& file)  //file.close() //file.eof()
 			file >> ED >> ID >> Location >> MDUR >> Signif;
 
 			Formulation* F = new Formulation(MissionType,Location,MDUR,Signif,ID,ED);
+
 		}
 		else if (EventType == 'X')
 		{
