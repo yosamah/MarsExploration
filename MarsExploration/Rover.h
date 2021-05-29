@@ -7,6 +7,7 @@ private:
 	char RoverType;
 	int CheckUpDuration;
 	int Speed;
+	int MissionCount;
 	//bool available;
 
 public:

@@ -11,7 +11,7 @@ private:
 	int TargetLocation;
 	int MissionDuration;
 	int Significance;
-	int formulationDate;
+	int FormulationDate;
 public:
 	/* Constructor */
 	Mission(char MissionType, int ID, int TargetLocation, int formulationDate, int Significance,Rover* r = NULL);
