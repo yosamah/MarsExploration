@@ -56,7 +56,7 @@ void UI::Read(ifstream& file)  //file.close() //file.eof()
 			file >> MissionType;
 			file >> ED >> ID >> Location >> MDUR >> Signif;
 
-			Formulation* F = new Formulation(Location,MDUR,Signif,ID,ED);
+			Formulation* F = new Formulation(MissionType,Location,MDUR,Signif,ID,ED);
 		}
 		else if (EventType == 'X')
 		{

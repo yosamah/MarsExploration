@@ -11,7 +11,7 @@ using namespace std;
 
 class UI
 {
-	MarsStation* pMars;
+	MarsStation *pMars;
 
 public:
 	UI(MarsStation* Mars);

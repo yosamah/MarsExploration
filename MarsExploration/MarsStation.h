@@ -19,7 +19,7 @@ private:
 	Queue<Rover*> PolarRovers;
 	Queue<Mission*> PolarMissions;
 	Queue<Mission*> CompletedMissions;
-	Queue<Event*> EventList;
+	//Queue<Event*> EventList;
 	Queue<int> MountainousOrder;
 	HashTable<Mission*,100> MountainousMissions;
 public:
