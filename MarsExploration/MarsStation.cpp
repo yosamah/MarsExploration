@@ -33,7 +33,7 @@ void MarsStation::Execute()
 	Action act;
 	UI input(this);
 	ifstream file;
-	file.open("TEST.txt");
+	file.open("TEST3.txt");
 	input.Read(file, EventList);
 	while (!EventList.isEmpty())
 	{
@@ -44,15 +44,18 @@ void MarsStation::Execute()
 		while (temp->getED() == day)
 		{
 			temp->Execute(MountainousMissions, EmeregncyMissions, MountainousOrder, PolarMissions);
-			bool check = EventList.dequeue(tempNode);
+			EventList.dequeue(tempNode);
+			
+			bool check=EventList.peek(tempNode);
 			if (!check)
-				return;
-			EventList.peek(tempNode);
+				break;
+
 			temp = tempNode->getData();
 
 		}
+
 		act.checkWaiting(MountainousMissions, EmeregncyMissions, MountainousOrder, PolarMissions, day, AvaiableRovers);
-		
+		//EmeregncyMissions.print();
 		day++;
 	}
 }

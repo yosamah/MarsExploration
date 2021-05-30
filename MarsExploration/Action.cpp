@@ -25,6 +25,7 @@ void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, i
 		if (cDay > d)
 		{
 			tempPriQ.enqueue(tempMission, tempNode->getKey());
+			
 		}
 		else
 		{
@@ -75,7 +76,7 @@ void Action::checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int 
 	Mission* tempMission;
 	int cDay;
 	Queue<Mission> tempQ;
-	while (!Polar.isEmpty())
+	if (!Polar.isEmpty())
 	{
 		Polar.dequeue(tempNode);
 		tempMission = tempNode->getData();
@@ -130,55 +131,61 @@ void Action::checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int 
 }
 void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Rover>* roverArray, int d)
 {
-	Node<Mission>* tempNode;
+	Node<Mission>* tempNode = NULL;
 	Mission* tempMission;
 	int cDay;
 	Queue<int> tempQ;
 	Node<int>* key;
 	while (!MountainousSort.isEmpty())
 	{
+		tempNode = NULL;
 		MountainousSort.dequeue(key);
 		Mountainous.remove(tempNode, *(key->getData()));
-		tempMission = tempNode->getData();
-		cDay = tempMission->getFormulationDate();
-		if (cDay > d)
+		if (tempNode)
 		{
-			tempQ.enqueue((key->getData()));
-			Mountainous.insert(tempMission, *(key->getData()));
-		}
-		else
-		{
-			while (cDay <= d)
+			tempMission = tempNode->getData();
+			cDay = tempMission->getFormulationDate();
+			if (cDay > d)
 			{
-				bool test = assignRover_M(roverArray, tempMission);
-				if (test && tempNode)
+				tempQ.enqueue((key->getData()));
+				Mountainous.insert(tempMission, *(key->getData()));
+				break;
+			}
+			else
+			{
+				while (cDay <= d)
 				{
-					tempQ.enqueue((key->getData()));
-					Mountainous.insert(tempMission, *(key->getData()));
-					bool can = MountainousSort.dequeue(key);
-					if (!can)
+					bool test = assignRover_M(roverArray, tempMission);
+					if (test && tempNode)
 					{
-						tempNode = NULL;
-						break;
+						tempQ.enqueue((key->getData()));
+						Mountainous.insert(tempMission, *(key->getData()));
+						bool can = MountainousSort.dequeue(key);
+						if (!can)
+						{
+							tempNode = NULL;
+							break;
+						}
+						Mountainous.remove(tempNode, *(key->getData()));
+						tempMission = tempNode->getData();
+						cDay = tempMission->getFormulationDate();
+
+
 					}
-					Mountainous.remove(tempNode, *(key->getData()));
-					tempMission = tempNode->getData();
-					cDay = tempMission->getFormulationDate();
-					
+					else
+					{
+						tempMission->increamentWaitingDays();
+						tempQ.enqueue((key->getData()));
+						Mountainous.insert(tempMission, *(key->getData()));
+						break;
+
+					}
 
 				}
-				else
-				{
-					tempMission->increamentWaitingDays();
-					tempQ.enqueue((key->getData()));
-					Mountainous.insert(tempMission, *(key->getData()));
-					break;
-
-				}
-
 			}
 		}
 	}
+
 	while (MountainousSort.dequeue(key))
 	{
 		Mountainous.remove(tempNode, *(key->getData()));

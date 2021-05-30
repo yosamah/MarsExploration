@@ -70,5 +70,17 @@ public:
 	{
 		return (Head == NULL);
 	}
+	
+	// EMSA7haaaaaaaaaaaaaaaaaaaa
+	/*void print() const
+	{
+		Node<T>* ptr = Head;
+		while (ptr)
+		{
+			cout << ptr->getKey() << " ";
+			ptr = ptr->getNext();
+		}
+		cout << endl;
+	}*/
 
 };
