@@ -23,7 +23,9 @@ void Formulation::Execute(HashTable<Mission>& Mountainous, PriQ<Mission>& Emerge
     else if (MissionType == 'E')
     {
         Mission* Emerg = new Mission(MissionType, MissionID, TargetLocation, MissionDuration, EventDay, Significance);
-        Emergency.enqueue(Emerg,Significance);
+        /*Priority Equation*/
+        int priority = (TargetLocation*MissionDuration*Significance)/(TargetLocation + MissionDuration + Significance); 
+        Emergency.enqueue(Emerg,-priority);
     }
 
 }

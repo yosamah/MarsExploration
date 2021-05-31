@@ -3,6 +3,8 @@
 class Cancellation :
     public Event
 {
+private:
+
 
 public:
     /* Constructor */  //Initialiser list 3shan al event

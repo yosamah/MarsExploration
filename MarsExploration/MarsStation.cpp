@@ -147,7 +147,7 @@ void MarsStation::Execute()
 	
 	UI input(this);
 	ifstream file;
-	file.open("TEST.txt");
+	file.open("TEST3.txt");
 	input.Read(file, EventList);
 	while (!EventList.isEmpty())//lazem el inexc teb2a fadya.
 	{
@@ -159,14 +159,18 @@ void MarsStation::Execute()
 		{
 			temp->Execute(MountainousMissions, EmeregncyMissions, MountainousOrder, PolarMissions);
 			EventList.dequeue(tempNode);
-			bool check = EventList.peek(tempNode);
+
+			
+			bool check=EventList.peek(tempNode);
 			if (!check)
 				break;
 			temp = tempNode->getData();
 		}
+
 		checkAndAssign();
 		MoveToExec();
 		MoveToCompMissions();
+
 		day++;
 	}
 }

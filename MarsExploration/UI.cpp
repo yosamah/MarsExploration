@@ -1,6 +1,8 @@
 #include "UI.h"
 #include "MarsStation.h"
 #include "Formulation.h"
+#include "Cancellation.h"
+#include "Promotion.h"
 
 UI::UI(MarsStation* Mars)
 {
@@ -66,8 +68,15 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 		{
 			int ED,ID;
 			file >> ED >> ID;
-
+			Cancellation* X =new Cancellation(ID,ED);
+			eventList.enqueue(X);
 		}
-
+		else if (EventType == 'P')
+		{
+			int ED, ID;
+			file >> ED >> ID;
+			Promotion* P = new Promotion(ID, ED);
+			eventList.enqueue(P);
+		}
 	}
 }

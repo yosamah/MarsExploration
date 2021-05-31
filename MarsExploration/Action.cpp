@@ -17,6 +17,7 @@ void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, i
 		if (cDay > d)
 		{
 			tempPriQ.enqueue(tempMission, tempNode->getKey());
+			
 		}
 		else
 		{
@@ -129,6 +130,7 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 	Node<int>* key;
 	while (!MountainousSort.isEmpty())
 	{
+		tempNode = NULL;
 		MountainousSort.dequeue(key);
 		Mountainous.remove(tempNode, *(key->getData()));
 		if (tempNode)
@@ -175,7 +177,6 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 			}
 		}
 	}
-		
 	while (MountainousSort.dequeue(key))
 	{
 		Mountainous.remove(tempNode, *(key->getData()));
