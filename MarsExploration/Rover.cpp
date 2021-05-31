@@ -6,7 +6,12 @@ Rover::Rover(char roverType, int checkUpDuration, int speed)
 	RoverType = roverType;
 	CheckUpDuration = checkUpDuration;
 	Speed = speed;
+	MissionCount = 0;
+	InMaintainance = false;
+	checkUpEnter = 0;
 }
+
+
 
 void Rover::setRoverType(char RT)
 {
@@ -33,4 +38,40 @@ void Rover::setSpeed(int s)
 int Rover::getSpeed()
 {
 	return Speed;
+}
+void Rover::increamentMissionCount()
+{
+	MissionCount++;
+}
+int Rover::getMissionCount(int d)
+{
+	if (MissionCount == CheckUpDuration)
+	{
+		MissionCount = 0;
+		checkUpEnter = d;
+		return -1;
+	}	
+	return MissionCount;
+}
+
+void Rover::setMaintain()
+{
+	if (!InMaintainance)
+	{
+		Speed = Speed / 2;
+		InMaintainance = true;
+	}
+	
+}
+void Rover::resetMaintain()
+{
+	if (InMaintainance)
+	{
+		Speed = Speed * 2;
+		InMaintainance = false;
+	}
+}
+bool Rover::moveToAvail(int day)
+{
+	return (day - checkUpEnter == CheckUpDuration);
 }

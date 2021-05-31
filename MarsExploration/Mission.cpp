@@ -78,3 +78,8 @@ void  Mission::increamentWaitingDays()
 {
 	WaitingDays++;
 }
+
+int Mission::getWaitingDay()
+{
+	return WaitingDays;
+}

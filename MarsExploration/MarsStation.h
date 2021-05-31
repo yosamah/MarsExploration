@@ -12,7 +12,6 @@
 class MarsStation
 {
 private:
-	// KOL el typenames ba2et object badal pointers.
 	// AvailRov[0] -> EmergRov 
 	// AvailRov[1] -> PolarRov 
 	// AvailRov[2] -> MountRov
@@ -21,7 +20,7 @@ private:
 	// AvailRov[5] -> MountRovMaint 
 
 	PriQ<Rover> AvaiableRovers[6];
-	PriQ<Rover> RoversInCheckUp;
+	Queue<Rover> RoversInCheckUp[3];
 	PriQ<Mission> InExecution;
 	PriQ<Mission> EmeregncyMissions;
 	Queue<Rover> PolarRovers;
@@ -37,5 +36,10 @@ public:
 	void SetAvailableRovers(int , int , int , int, int, int, int,int , int);
 
 	void Execute();
+	void checkAndAssign();
 
+	void MoveToExec();
+	void MoveToCompMissions();
+	void MoveRover(Mission* mission);
+	void MoveToAvailRover();
 };

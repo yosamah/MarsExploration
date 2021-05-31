@@ -40,5 +40,6 @@ public:
 	void setMissionType(char);
 
 	void increamentWaitingDays();
+	int getWaitingDay();
 };
 

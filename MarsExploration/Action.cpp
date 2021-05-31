@@ -1,14 +1,6 @@
 #include "Action.h"
 
 
-void Action::checkWaiting(HashTable<Mission>& Mountainous, PriQ<Mission>& Emergency, Queue<int>& MountainousSort, Queue<Mission>& Polar, int d, PriQ<Rover>* roverArray)
-{
-	checkWaiting_E(Emergency, roverArray, d);
-	checkWaiting_P(Polar, roverArray, d);
-	checkWaiting_M(Mountainous, MountainousSort, roverArray, d);
-}
-
-
 
 void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, int d)
 {
@@ -75,7 +67,7 @@ void Action::checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int 
 	Mission* tempMission;
 	int cDay;
 	Queue<Mission> tempQ;
-	while (!Polar.isEmpty())
+	if (!Polar.isEmpty())
 	{
 		Polar.dequeue(tempNode);
 		tempMission = tempNode->getData();
@@ -130,7 +122,7 @@ void Action::checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int 
 }
 void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Rover>* roverArray, int d)
 {
-	Node<Mission>* tempNode;
+	Node<Mission>* tempNode = NULL;
 	Mission* tempMission;
 	int cDay;
 	Queue<int> tempQ;
@@ -139,46 +131,51 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 	{
 		MountainousSort.dequeue(key);
 		Mountainous.remove(tempNode, *(key->getData()));
-		tempMission = tempNode->getData();
-		cDay = tempMission->getFormulationDate();
-		if (cDay > d)
+		if (tempNode)
 		{
-			tempQ.enqueue((key->getData()));
-			Mountainous.insert(tempMission, *(key->getData()));
-		}
-		else
-		{
-			while (cDay <= d)
+			tempMission = tempNode->getData();
+			cDay = tempMission->getFormulationDate();
+			if (cDay > d)
 			{
-				bool test = assignRover_M(roverArray, tempMission);
-				if (test && tempNode)
+				tempQ.enqueue((key->getData()));
+				Mountainous.insert(tempMission, *(key->getData()));
+				break;
+			}
+			else
+			{
+				while (cDay <= d)
 				{
-					tempQ.enqueue((key->getData()));
-					Mountainous.insert(tempMission, *(key->getData()));
-					bool can = MountainousSort.dequeue(key);
-					if (!can)
+					bool test = assignRover_M(roverArray, tempMission);
+					if (test && tempNode)
 					{
-						tempNode = NULL;
-						break;
+						tempQ.enqueue((key->getData()));
+						Mountainous.insert(tempMission, *(key->getData()));
+						bool can = MountainousSort.dequeue(key);
+						if (!can)
+						{
+							tempNode = NULL;
+							break;
+						}
+						Mountainous.remove(tempNode, *(key->getData()));
+						tempMission = tempNode->getData();
+						cDay = tempMission->getFormulationDate();
+
+
 					}
-					Mountainous.remove(tempNode, *(key->getData()));
-					tempMission = tempNode->getData();
-					cDay = tempMission->getFormulationDate();
-					
+					else
+					{
+						tempMission->increamentWaitingDays();
+						tempQ.enqueue((key->getData()));
+						Mountainous.insert(tempMission, *(key->getData()));
+						break;
+
+					}
 
 				}
-				else
-				{
-					tempMission->increamentWaitingDays();
-					tempQ.enqueue((key->getData()));
-					Mountainous.insert(tempMission, *(key->getData()));
-					break;
-
-				}
-
 			}
 		}
 	}
+		
 	while (MountainousSort.dequeue(key))
 	{
 		Mountainous.remove(tempNode, *(key->getData()));
@@ -240,4 +237,85 @@ bool Action::assignRover_M(PriQ<Rover>* roverArray, Mission*& tempMission)
 	test = assignRover_E(roverArray, tempMission, 'M');
 	return test;
 
+}
+
+void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& InExecution)
+{
+	Node<Mission>* tempNode = NULL;
+	Mission* tempMission;
+	int CD;
+	Queue<int> tempQ;
+	Node<int>* key;
+
+	while (!MountainousSort.isEmpty())
+	{
+		MountainousSort.peek(key);
+		bool check = Mountainous.remove(tempNode, *(key->getData()));
+		if (check)
+		{
+			tempMission = tempNode->getData();
+			if (tempMission->getRover())
+			{
+				CD = tempMission->getMissionDuration() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+				InExecution.enqueue(tempMission, CD);
+				MountainousSort.dequeue(key);
+			}
+			else
+			{
+				Mountainous.insert(tempMission, *(key->getData()));
+				break;
+			}
+			
+		}
+		else
+			MountainousSort.dequeue(key);
+	}
+	
+}
+void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution)
+{
+	Node<Mission>* tempNode;
+	Mission* tempMission;
+	int CD;
+	Queue<Mission> tempQ;
+	while (!Polar.isEmpty())
+	{
+		Polar.peek(tempNode);
+		tempMission = tempNode->getData();
+		if (tempMission->getRover())
+		{
+			CD = tempMission->getMissionDuration() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+			InExecution.enqueue(tempMission, CD);
+			Polar.dequeue(tempNode);
+		}
+		else
+		{
+			break;
+		}
+
+	}
+	
+}
+void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution)
+{
+	Node<Mission>* tempNode;
+	Mission* tempMission;
+	int CD;
+	PriQ<Mission> tempPriQ;
+	while (!Emergency.isEmpty())
+	{
+		Emergency.peek(tempNode);
+		tempMission = tempNode->getData();
+		if (tempMission->getRover())
+		{
+			CD = tempMission->getMissionDuration() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+			InExecution.enqueue(tempMission, CD);
+			Emergency.dequeue(tempNode);
+		}
+		else
+		{
+			break;
+		}
+
+	}
 }

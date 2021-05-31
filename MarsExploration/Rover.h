@@ -8,6 +8,8 @@ private:
 	int CheckUpDuration;
 	int Speed;
 	int MissionCount;
+	bool InMaintainance;
+	int checkUpEnter;
 	//bool available;
 
 public:
@@ -23,5 +25,11 @@ public:
 	void setSpeed(int);
 	int getSpeed();
 
+	void increamentMissionCount();
+	int getMissionCount(int day);
 
+	void setMaintain();
+	void resetMaintain();
+
+	bool moveToAvail(int day);
 };
