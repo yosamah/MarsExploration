@@ -28,7 +28,7 @@ private:
 	Queue<Mission> CompletedMissions;
 	Queue<Event> EventList;
 	Queue<int> MountainousOrder;
-	HashTable<Mission,100> MountainousMissions;
+	HashTable<Mission,101> MountainousMissions;
 
 	int day;
 public:

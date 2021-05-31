@@ -6,5 +6,6 @@ int main()
 {
 	MarsStation mainP;
 	mainP.Execute();
+	cout << "FINISH";
 	return 0;
 }

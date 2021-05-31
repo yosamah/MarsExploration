@@ -69,7 +69,7 @@ void MarsStation::MoveToCompMissions()
 		CompletedMissions.enqueue(tempMission);
 	}
 	
-	MoveToAvailRover();
+	
 
 }
 
@@ -142,6 +142,8 @@ void MarsStation::MoveRover(Mission* tempM)
 	tempM->setRover(NULL);
 
 }
+
+
 void MarsStation::Execute()
 {
 	
@@ -149,7 +151,7 @@ void MarsStation::Execute()
 	ifstream file;
 	file.open("TEST3.txt");
 	input.Read(file, EventList);
-	while (!EventList.isEmpty())//lazem el inexc teb2a fadya.
+	while (!EventList.isEmpty() || !InExecution.isEmpty())
 	{
 		Node<Event>* tempNode;
 		EventList.peek(tempNode);
@@ -170,6 +172,7 @@ void MarsStation::Execute()
 		checkAndAssign();
 		MoveToExec();
 		MoveToCompMissions();
+		MoveToAvailRover();
 
 		day++;
 	}

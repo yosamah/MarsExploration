@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Node.h"
 
-template <typename T, int size=100>
+template <typename T, int size=101>
 class HashTable
 {
 	// Creating array of Node pointers to store in each node pinter a pointer of data of type T and its key and the next node(pointer).
