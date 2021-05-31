@@ -203,6 +203,7 @@ bool Action::assignRover_E(PriQ<Rover>* roverArray, Mission*& tempMission, char 
 	{
 		// nen2el eel rover
 		tempMission->setRover(tempNode->getData());
+		tempNode->getData()->increamentMissionCount();
 		return test;
 	}
 	if (type == 'M')
@@ -220,6 +221,7 @@ bool Action::assignRover_P(PriQ<Rover>* roverArray, Mission*& tempMission)
 	{
 		// nen2el eel rover
 		tempMission->setRover(tempNode->getData());
+		tempNode->getData()->increamentMissionCount();
 		
 	}
 	return test;
@@ -233,6 +235,7 @@ bool Action::assignRover_M(PriQ<Rover>* roverArray, Mission*& tempMission)
 	{
 		// nen2el eel rover
 		tempMission->setRover(tempNode->getData());
+		tempNode->getData()->increamentMissionCount();
 		return test;
 	}
 	test = assignRover_E(roverArray, tempMission, 'M');

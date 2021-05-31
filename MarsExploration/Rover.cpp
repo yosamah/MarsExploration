@@ -1,7 +1,7 @@
 #include "Rover.h"
 
 
-Rover::Rover(char roverType, int checkUpDuration, int speed)
+Rover::Rover(char roverType, int checkUpDuration, int speed, int N)
 {
 	RoverType = roverType;
 	CheckUpDuration = checkUpDuration;
@@ -9,6 +9,7 @@ Rover::Rover(char roverType, int checkUpDuration, int speed)
 	MissionCount = 0;
 	InMaintainance = false;
 	checkUpEnter = 0;
+	NumBeforeCheck = N;
 }
 
 
@@ -45,7 +46,7 @@ void Rover::increamentMissionCount()
 }
 int Rover::getMissionCount(int d)
 {
-	if (MissionCount == CheckUpDuration)
+	if (MissionCount == NumBeforeCheck)
 	{
 		MissionCount = 0;
 		checkUpEnter = d;

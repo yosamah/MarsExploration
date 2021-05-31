@@ -33,7 +33,7 @@ private:
 	int day;
 public:
 	MarsStation();
-	void SetAvailableRovers(int , int , int , int, int, int, int,int , int);
+	void SetAvailableRovers(int , int , int , int, int, int, int,int , int, int);
 
 	void Execute();
 	void checkAndAssign();

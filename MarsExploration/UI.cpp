@@ -34,7 +34,7 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 	file >> SpeedOfMountRover >> SpeedOfPolarRover >> SpeedOfEmergRover;
 	file >> BeforeCheckup;
 	file >> CheckUpDurationMount >> CheckUpDurationPolar >> CheckUpDurationEmerg;
-	pMars->SetAvailableRovers(NumOfMountRover, NumOfPolarRover, NumOfEmergRover, SpeedOfMountRover, SpeedOfPolarRover, SpeedOfEmergRover, CheckUpDurationMount, CheckUpDurationPolar, CheckUpDurationEmerg);
+	pMars->SetAvailableRovers(NumOfMountRover, NumOfPolarRover, NumOfEmergRover, SpeedOfMountRover, SpeedOfPolarRover, SpeedOfEmergRover, CheckUpDurationMount, CheckUpDurationPolar, CheckUpDurationEmerg, BeforeCheckup);
 	
 	///////////////////       /////////////////////////
 	

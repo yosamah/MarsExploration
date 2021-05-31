@@ -10,11 +10,12 @@ private:
 	int MissionCount;
 	bool InMaintainance;
 	int checkUpEnter;
+	int NumBeforeCheck;
 	//bool available;
 
 public:
 	/* Constructor */
-	Rover(char roverType,int checkUpDuration, int speed);
+	Rover(char roverType,int checkUpDuration, int speed, int NumBeforeCheck);
 
 	void setRoverType(char);
 	char getRoverType();
