@@ -260,7 +260,7 @@ void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& Mountaino
 			tempMission = tempNode->getData();
 			if (tempMission->getRover())
 			{
-				CD = tempMission->getMissionDuration() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+				CD = tempMission->getTotalMissionDur() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
 				InExecution.enqueue(tempMission, CD);
 				MountainousSort.dequeue(key);
 			}
@@ -288,7 +288,7 @@ void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution)
 		tempMission = tempNode->getData();
 		if (tempMission->getRover())
 		{
-			CD = tempMission->getMissionDuration() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+			CD = tempMission->getTotalMissionDur() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
 			InExecution.enqueue(tempMission, CD);
 			Polar.dequeue(tempNode);
 		}
@@ -312,7 +312,7 @@ void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution)
 		tempMission = tempNode->getData();
 		if (tempMission->getRover())
 		{
-			CD = tempMission->getMissionDuration() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+			CD = tempMission->getTotalMissionDur() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
 			InExecution.enqueue(tempMission, CD);
 			Emergency.dequeue(tempNode);
 		}

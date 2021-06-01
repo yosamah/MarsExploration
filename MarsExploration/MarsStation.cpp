@@ -57,7 +57,7 @@ void MarsStation::MoveToCompMissions()
 		{
 			InExecution.dequeue(tempNode);
 			MoveRover(tempMission);
-			tempPri.enqueue(tempMission, tempMission->getFormulationDate());
+			tempPri.enqueue(tempMission, tempNode->getKey() - tempMission->getFormulationDate() - tempMission->getWaitingDay());
 		}
 		else
 			break;

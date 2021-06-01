@@ -12,16 +12,22 @@ Mission::Mission(char MT, int id, int TL, int MD, int FD, int S, Rover* r)
 	MissionType = MT;
 	MissionDuration = MD;
 	WaitingDays = 0;
+	TotalMissionDuration = 0;
 }
 void Mission::setRover(Rover* r)
 {
+	if(r)
+		TotalMissionDuration = MissionDuration + (TargetLocation / (r->getSpeed()))*2 / 25;
 	rover = r;
 }
 Rover* Mission::getRover()
 {
 	return rover;
 }
-
+int Mission::getTotalMissionDur()
+{
+	return TotalMissionDuration;
+}
 int Mission::getID()
 {
 	return ID;
