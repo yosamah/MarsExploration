@@ -5,6 +5,7 @@
 #include "Queue.h"
 #include "HashTable.h"
 #include "Mission.h"
+
 using namespace std;
 class MarsStation;
 class Event;
@@ -20,8 +21,12 @@ public:
 
 	void Read(ifstream& file, Queue<Event>&);  //file.close() //file.eof()
 	void Write(ofstream& file);
-	void InteractiveMode(HashTable<Mission> Mountainous, PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar, int* Arr);
+	void Mode(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar, PriQ<Mission> InExecution, PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM, Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInCheckUpP, Queue<Rover> RoversInCheckUpM, Queue<Mission> CompletedMissions);
+	void PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar);
+	void PrintInExecution(PriQ<Mission> InExecution);
+	void PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM);
+	void PrintInCheckUp(Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInCheckUpP, Queue<Rover> RoversInCheckUpM);
+	void PrintComplete(Queue<Mission> CompletedMissions);
 	void SilentMode();
-	void StepByStepMode();
 };
 

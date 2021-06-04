@@ -4,6 +4,8 @@
 class Rover
 {
 private:
+
+	int ID;
 	char RoverType;
 	int CheckUpDuration;
 	int Speed;
@@ -33,4 +35,10 @@ public:
 	void resetMaintain();
 
 	bool moveToAvail(int day);
+	
+	int getID();
+	
+	void setID(int);
+
+
 };

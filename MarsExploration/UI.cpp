@@ -84,9 +84,376 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 	}
 }
 
-void UI::InteractiveMode(HashTable<Mission> Mountainous, PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar, int* Arr) 
+void UI::PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar)
 {
-	cout << "Current Day: " << pMars->GetDay() << endl;
-	cout << "7ot el number" <<"Wating Missions: "<< "[" << endl;
+	int CountM = 0;
+	int CountP = 0;
+	int CountE = 0;
+	int CountW = 0;
+	int CountInEx = 0;
 
+	Queue<int> Temp;
+	Node<int>* TempID;
+	Node<Mission>* TempMission;
+	int TempInt;
+	while (!Emergency.isEmpty())
+	{
+		Emergency.dequeue(TempMission);
+		int ID = TempMission->getData()->getID();
+		CountE++;
+		CountW++;
+		Temp.enqueue(&ID);
+	}
+	while (!Polar.isEmpty())
+	{
+		Polar.dequeue(TempMission);
+		int ID = TempMission->getData()->getID();
+		CountP++;
+		CountW++;
+		Temp.enqueue(&ID);
+	}
+	while (!MountainousSort.isEmpty())
+	{
+		MountainousSort.dequeue(TempID);
+		CountM++;
+		CountW++;
+		Temp.enqueue(TempID->getData());
+	}
+
+	cout << "Current Day: " << pMars->GetDay() << endl;
+	cout << CountW << " Waiting Missions: ";
+	if (Temp.isEmpty())
+	{
+		cout << "[ ] ( ) { } ";
+	}
+	while (!Temp.isEmpty())
+	{
+		cout << "[ ";
+		for (int i = 0; i < CountE; i++)
+		{
+			Temp.dequeue(TempID);
+			int* ids = TempID->getData();
+			cout << (*ids) << ",";
+
+		}
+		cout << "\b ]" << "  ";
+		cout << "( ";
+		for (int i = 0; i < CountP; i++)
+		{
+			Temp.dequeue(TempID);
+			int* ids = TempID->getData();
+			cout << (*ids) << ",";
+		}
+		cout << "\b )" << "  ";
+		cout << "{ ";
+		for (int i = 0; i < CountM; i++)
+		{
+			Temp.dequeue(TempID);
+			int* ids = TempID->getData();
+			cout << (*ids) << ",";
+		}
+		cout << "\b }";
+	}
+	cout << endl;
+	cout << "--------------------------------------" << endl;
+}
+
+void UI::PrintInExecution(PriQ<Mission> InExecution)
+{
+	int CountM = 0;
+	int CountP = 0;
+	int CountE = 0;
+	int CountInEx = 0;
+
+
+	Queue<Mission> Emerge;
+	Queue<Mission> Mount;
+	Queue<Mission> Polar;
+	Node<Mission>* MissionNode;
+	while (!InExecution.isEmpty())
+	{
+		InExecution.dequeue(MissionNode);
+		if (MissionNode->getData()->getMissionType() == 'E')
+		{
+			CountE++;
+			CountInEx++;
+			Emerge.enqueue(MissionNode->getData());
+		}
+		else if (MissionNode->getData()->getMissionType() == 'P')
+		{
+			CountP++;
+			CountInEx++;
+			Polar.enqueue(MissionNode->getData());
+		}
+		else if (MissionNode->getData()->getMissionType() == 'M')
+		{
+			CountM++;
+			CountInEx++;
+			Mount.enqueue(MissionNode->getData());
+		}
+	
+		
+
+	}
+	cout << CountInEx << " In-Execution Missions/Rovers: ";
+
+	cout << "[  ";
+	while (!Emerge.isEmpty())
+	{
+		Emerge.dequeue(MissionNode);
+		cout << MissionNode->getData()->getID() << "/" << MissionNode->getData()->getRover()->getID() << ", ";
+
+	}
+	cout << "\b\b  ] ";
+
+	cout << "(  ";
+	while (!Polar.isEmpty())
+	{
+		Polar.dequeue(MissionNode);
+		cout << MissionNode->getData()->getID() << "/" << MissionNode->getData()->getRover()->getID() << ", ";
+
+	}
+	cout << "\b\b  ) ";
+
+
+	cout << "{  ";
+	while (!Mount.isEmpty())
+	{
+		Mount.dequeue(MissionNode);
+		cout << MissionNode->getData()->getID() << "/" << MissionNode->getData()->getRover()->getID() << ", ";
+	}
+	cout << "\b\b  } ";
+
+	cout << endl;
+
+	cout << "--------------------------------------" << endl;
+}
+
+void UI::PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM )
+{
+	int CountR = 0;
+	int CountM = 0;
+	int CountP = 0;
+	int CountE = 0;
+
+
+	Queue<Rover> Rovers;
+	Node<Rover>* Temp;
+
+
+	while (!AvaiableRoversE.isEmpty())
+	{
+		AvaiableRoversE.dequeue(Temp);
+		Rovers.enqueue(Temp->getData());
+		CountE++;
+		CountR++;
+	}
+	while (!AvaiableRoversP.isEmpty())
+	{
+		AvaiableRoversP.dequeue(Temp);
+		Rovers.enqueue(Temp->getData());
+		CountP++;
+		CountR++;
+	}
+	while (!AvaiableRoversM.isEmpty())
+	{
+		AvaiableRoversM.dequeue(Temp);
+		Rovers.enqueue(Temp->getData());
+		CountM++;
+		CountR++;
+	}
+	cout << CountR << " Available Rovers: ";
+	if (Rovers.isEmpty())
+	{
+		cout << "[ ] ( ) { } ";
+	}
+	while (!Rovers.isEmpty())
+	{
+		cout << "[  ";
+		for (int i = 0; i < CountE; i++)
+		{
+			Rovers.dequeue(Temp);
+			cout << Temp->getData()->getID() << ",";
+		}
+
+		cout << "\b  ]" << "  ";
+		cout << "(  ";
+		for (int i = 0; i < CountP; i++)
+		{
+			Rovers.dequeue(Temp);
+			cout << Temp->getData()->getID() << ",";
+		}
+		cout << "\b  )" << "  ";
+		cout << "{  ";
+		for (int i = 0; i < CountM; i++)
+		{
+			Rovers.dequeue(Temp);
+			cout << Temp->getData()->getID() << ",";
+		}
+		cout << "\b  }";
+
+	}
+	cout << endl;
+	cout << "--------------------------------------" << endl;
+
+
+}
+
+void UI::PrintInCheckUp(Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInCheckUpP, Queue<Rover> RoversInCheckUpM)
+{
+	int CountC = 0;
+	int CountM = 0;
+	int CountP = 0;
+	int CountE = 0;
+
+
+	Queue<Rover> CheckRovers;
+	Node<Rover>* Temp;
+
+
+	while (!RoversInCheckUpE.isEmpty())
+	{
+		RoversInCheckUpE.dequeue(Temp);
+		CheckRovers.enqueue(Temp->getData());
+		CountE++;
+		CountC++;
+	}
+	while (!RoversInCheckUpP.isEmpty())
+	{
+		RoversInCheckUpP.dequeue(Temp);
+		CheckRovers.enqueue(Temp->getData());
+		CountP++;
+		CountC++;
+	}
+	while (!RoversInCheckUpM.isEmpty())
+	{
+		RoversInCheckUpM.dequeue(Temp);
+		CheckRovers.enqueue(Temp->getData());
+		CountM++;
+		CountC++;
+	}
+	cout << CountC << " In-Checkup Rovers: ";
+	if (CheckRovers.isEmpty())
+	{
+		cout << "[ ] ( ) { } ";
+	}
+	while (!CheckRovers.isEmpty())
+	{
+		cout << "[  ";
+		for (int i = 0; i < CountE; i++)
+		{
+			CheckRovers.dequeue(Temp);
+			cout << Temp->getData()->getID() << ",";
+		}
+
+		cout << "\b  ]" << "  ";
+		cout << "(  ";
+		for (int i = 0; i < CountP; i++)
+		{
+			CheckRovers.dequeue(Temp);
+			cout << Temp->getData()->getID() << ",";
+		}
+		cout << "\b  )" << "  ";
+		cout << "{  ";
+		for (int i = 0; i < CountM; i++)
+		{
+			CheckRovers.dequeue(Temp);
+			cout << Temp->getData()->getID() << ",";
+		}
+		cout << "\b  }";
+
+	}
+	cout << endl;
+	cout << "--------------------------------------" << endl;
+
+
+
+}
+
+void UI::PrintComplete(Queue<Mission> CompletedMissions)
+{
+	int CountM = 0;
+	int CountP = 0;
+	int CountE = 0;
+	int CountComp = 0;
+
+
+	Queue<Mission> Emerge;
+	Queue<Mission> Mount;
+	Queue<Mission> Polar;
+	Node<Mission>* MissionNode;
+	while (!CompletedMissions.isEmpty())
+	{
+		CompletedMissions.dequeue(MissionNode);
+		if (MissionNode->getData()->getMissionType() == 'E')
+		{
+			CountE++;
+			CountComp++;
+			Emerge.enqueue(MissionNode->getData());
+		}
+		else if (MissionNode->getData()->getMissionType() == 'P')
+		{
+			CountP++;
+			CountComp++;
+			Polar.enqueue(MissionNode->getData());
+		}
+		else if (MissionNode->getData()->getMissionType() == 'M')
+		{
+			CountM++;
+			CountComp++;
+			Mount.enqueue(MissionNode->getData());
+		}
+
+	}
+	cout << CountComp << " Completed Missions: ";
+
+	cout << "[  ";
+	while (!Emerge.isEmpty())
+	{
+		Emerge.dequeue(MissionNode);
+		cout << MissionNode->getData()->getID()  << ", ";
+
+	}
+	cout << "\b\b  ] ";
+
+	cout << "(  ";
+	while (!Polar.isEmpty())
+	{
+		Polar.dequeue(MissionNode);
+		cout << MissionNode->getData()->getID() <<", ";
+
+	}
+	cout << "\b\b  ) ";
+
+
+	cout << "{  ";
+	while (!Mount.isEmpty())
+	{
+		Mount.dequeue(MissionNode);
+		cout << MissionNode->getData()->getID()  << ", ";
+	}
+	cout << "\b\b  } ";
+
+	cout << endl;
+
+	cout << "--------------------------------------" << endl;
+}
+
+void UI::Mode(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar, PriQ<Mission> InExecution,PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM, Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInCheckUpP, Queue<Rover> RoversInCheckUpM, Queue<Mission> CompletedMissions)
+{
+	PrintWait(Emergency, MountainousSort, Polar);
+	PrintInExecution(InExecution);
+	PrintAvRovers(AvaiableRoversE, AvaiableRoversP, AvaiableRoversM);
+	PrintInCheckUp(RoversInCheckUpE, RoversInCheckUpP, RoversInCheckUpM);
+	PrintComplete(CompletedMissions);
+	cout << "======================= New Day ======================" << endl;
+	//we might need 5 functions for each line in the interactive mode
+	// we did in deeddd
+
+
+}
+void UI::SilentMode()
+{
+	cout << "Silent Mode \nSimulation Starts... \nSimulation ends, Output file created" << endl;
+		
 }

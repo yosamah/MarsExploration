@@ -1,19 +1,19 @@
 #include "MarsStation.h"
-
+#include<windows.h>
 
 
 MarsStation::MarsStation()
 {
-	
+
 	day = 1;
 	NumberOfExec = 0;
 	NumberOfWait = 0;
 	AutoPro = 0;
-	for (int i=0;i<7;i++)
+	for (int i = 0; i < 7; i++)
 	{
 		StatsArr[i] = 0;
 	}
-	
+
 
 
 }
@@ -29,30 +29,40 @@ void MarsStation::SetAutoPro(int A)
 	AutoPro = A;
 }
 int MarsStation::GetAvgExecDays() //Should be used after all loops (calculations occur after end of while loop)
-{ return NumberOfExec; }
+{
+	return NumberOfExec;
+}
 
 int MarsStation::GetAvgWaitDays() //Should be used after all loops (calculations occur after end of while loop)
-{ return NumberOfWait; }
+{
+	return NumberOfWait;
+}
 int MarsStation::GetAutoPromotedPercent()
-{ return ((StatsArr[6] / StatsArr[5]) * 100); }
+{
+	return ((StatsArr[6] / StatsArr[5]) * 100);
+}
 
-void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int SOPR, int SOER,int CDM, int CDP , int CDE, int NBC)
+void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int SOPR, int SOER, int CDM, int CDP, int CDE, int NBC)
 {
 	StatsArr[0] = NOER;
 	StatsArr[1] = NOPR;
 	StatsArr[2] = NOMR;
-
+	int id = 1;
 
 	for (int i = 0; i < NOMR; i++)
 	{
 
-		Rover* Mount = new Rover('M', CDM , SOMR, NBC);
-		AvaiableRovers[2].enqueue(Mount , SOMR);
+		Rover* Mount = new Rover('M', CDM, SOMR, NBC);
+		Mount->setID(id);
+		id++;
+		AvaiableRovers[2].enqueue(Mount, SOMR);
 	}
 
 	for (int i = 0; i < NOPR; i++)
 	{
 		Rover* Polar = new Rover('P', CDP, SOPR, NBC);
+		Polar->setID(id);
+		id++;
 		AvaiableRovers[1].enqueue(Polar, SOPR);
 	}
 
@@ -60,6 +70,8 @@ void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int
 	{
 
 		Rover* Emerg = new Rover('E', CDE, SOER, NBC);
+		Emerg->setID(id);
+		id++;
 		AvaiableRovers[0].enqueue(Emerg, SOER);
 	}
 }
@@ -75,7 +87,7 @@ void MarsStation::checkAndAssign()
 void MarsStation::MoveToExec()
 {
 	Action act;
-	act.MoveToExec_E(EmeregncyMissions, InExecution,NumberOfExec, NumberOfWait);
+	act.MoveToExec_E(EmeregncyMissions, InExecution, NumberOfExec, NumberOfWait);
 	act.MoveToExec_P(PolarMissions, InExecution, NumberOfExec, NumberOfWait);
 	act.MoveToExec_M(MountainousMissions, MountainousOrder, InExecution, NumberOfExec, NumberOfWait);
 
@@ -107,8 +119,8 @@ void MarsStation::MoveToCompMissions()
 		tempMission = tempNode->getData();
 		CompletedMissions.enqueue(tempMission);
 	}
-	
-	
+
+
 
 }
 
@@ -168,7 +180,7 @@ void MarsStation::MoveRover(Mission* tempM)
 		else
 			RoversInCheckUp[2].enqueue(tempRover);
 	}
-	else 
+	else
 	{
 		if (tempRover->getRoverType() == 'E')
 			AvaiableRovers[0].enqueue(tempRover, tempRover->getSpeed());
@@ -184,18 +196,24 @@ void MarsStation::MoveRover(Mission* tempM)
 void MarsStation::AutoPromote()
 {
 	Action act;
-	act.AutoPromote(MountainousMissions, MountainousOrder, EmeregncyMissions, AutoPro,StatsArr);
+	act.AutoPromote(MountainousMissions, MountainousOrder, EmeregncyMissions, AutoPro, StatsArr);
 }
 
 void MarsStation::Execute()
 {
-	
 	UI input(this);
+	UI output(this);
 	ifstream file;
 	file.open("TEST.txt");
 	input.Read(file, EventList);
+	char Choice;
 
-	while (!EventList.isEmpty() || !InExecution.isEmpty()|| !MountainousOrder.isEmpty() || !PolarMissions.isEmpty() || !EmeregncyMissions.isEmpty() )
+	cout << "Select Mode:" << endl;
+	cout << "i for interactive, s for Step-By-Step, x for Silent " << endl;
+	cin >> Choice;
+
+
+	while (!EventList.isEmpty() || !InExecution.isEmpty() || !MountainousOrder.isEmpty() || !PolarMissions.isEmpty() || !EmeregncyMissions.isEmpty())
 	{
 		Node<Event>* tempNode;
 		EventList.peek(tempNode);
@@ -219,8 +237,34 @@ void MarsStation::Execute()
 		MoveToAvailRover();
 
 		AutoPromote();
+
+		if (Choice == 'i')
+		{
+			cin.ignore();
+
+			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
+		}
+		else if (Choice == 's')
+		{
+			//for (int i = 0; i < 1000000000; i++)
+			//{
+				//i++;
+			//}
+			Sleep(1000); // included <windows.h>
+			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
+		}
+
 		day++;
+
 	}
+	if (Choice == 'x')
+	{
+		output.SilentMode();
+	}
+	
 	NumberOfExec /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
 	NumberOfWait /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
+
+	//output.Write("Output.txt");
+
 }

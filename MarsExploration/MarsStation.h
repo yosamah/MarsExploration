@@ -27,6 +27,9 @@ private:
 	//StatsArr[5] -> MountMission 
 	//StatsArr[6] -> AutoPromotedMission 
 
+	//RoversInCheckUp[0] -> EmergRov
+	//RoversInCheckUp[1] -> PolarRov
+	//RoversInCheckUp[2] -> MountRov
 
 
 	PriQ<Rover> AvaiableRovers[6];
@@ -39,6 +42,7 @@ private:
 	Queue<Event> EventList;
 	Queue<int> MountainousOrder;
 	HashTable<Mission,101> MountainousMissions;
+	
 
 	int NumberOfExec;
 	int NumberOfWait;
@@ -66,4 +70,6 @@ public:
 	int GetAutoPromotedPercent();
 	void SetAutoPro(int);
 	void AutoPromote();
+
+
 };

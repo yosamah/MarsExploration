@@ -76,3 +76,12 @@ bool Rover::moveToAvail(int day)
 {
 	return (day - checkUpEnter == CheckUpDuration);
 }
+int Rover::getID()
+{
+	return ID;
+}
+
+void Rover::setID(int id)
+{
+	ID = id;
+}
