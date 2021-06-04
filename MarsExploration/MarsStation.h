@@ -25,6 +25,7 @@ private:
 	//StatsArr[3] -> EmergMission 
 	//StatsArr[4] -> PolarMission 
 	//StatsArr[5] -> MountMission 
+	//StatsArr[6] -> AutoPromotedMission 
 
 
 
@@ -38,9 +39,11 @@ private:
 	Queue<Event> EventList;
 	Queue<int> MountainousOrder;
 	HashTable<Mission,101> MountainousMissions;
-	
-	int StatsArr[6];
 
+	int NumberOfExec;
+	int NumberOfWait;
+	int StatsArr[7];
+	int AutoPro;
 	int day;
 
 public:
@@ -57,4 +60,10 @@ public:
 
 
 	int GetDay();
+
+	int GetAvgExecDays();
+	int GetAvgWaitDays();
+	int GetAutoPromotedPercent();
+	void SetAutoPro(int);
+	void AutoPromote();
 };

@@ -45,6 +45,7 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 	int NumOfEvents;
 
 	file >> AutoPromotion;
+	pMars->SetAutoPro(AutoPromotion);
 	file >> NumOfEvents;
 	
 	char EventType;

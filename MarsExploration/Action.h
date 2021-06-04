@@ -23,10 +23,10 @@ public:
 	void checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int d);
 	void checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Rover>* roverArray, int d);
 
-	void MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& InExecution);
-	void MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution);
-	void MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution);
-	
+	void MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& InExecution, int&Exec, int& Wait);
+	void MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution, int& Exec, int& Wait);
+	void MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution, int& Exec, int& Wait);
+	void AutoPromote(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& Emergency,int,int*);
 
 };
 
