@@ -19,6 +19,15 @@ private:
 	// AvailRov[4] -> PolarRovMaint 
 	// AvailRov[5] -> MountRovMaint 
 
+	//StatsArr[0] -> EmergRov 
+	//StatsArr[1] -> PolarRov 
+	//StatsArr[2] -> MountRov
+	//StatsArr[3] -> EmergMission 
+	//StatsArr[4] -> PolarMission 
+	//StatsArr[5] -> MountMission 
+
+
+
 	PriQ<Rover> AvaiableRovers[6];
 	Queue<Rover> RoversInCheckUp[3];
 	PriQ<Mission> InExecution;
@@ -29,6 +38,7 @@ private:
 	Queue<Event> EventList;
 	Queue<int> MountainousOrder;
 	HashTable<Mission,101> MountainousMissions;
+	int StatsArr[6];
 
 	int day;
 public:

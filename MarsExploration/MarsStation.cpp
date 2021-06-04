@@ -5,12 +5,22 @@
 MarsStation::MarsStation()
 {
 	day = 1;
+	for (int i=0;i<6;i++)
+	{
+		StatsArr[i] = 0;
+	}
+
 }
 void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int SOPR, int SOER,int CDM, int CDP , int CDE, int NBC)
 {
+	StatsArr[0] = NOER;
+	StatsArr[1] = NOPR;
+	StatsArr[2] = NOMR;
+
 
 	for (int i = 0; i < NOMR; i++)
 	{
+
 		Rover* Mount = new Rover('M', CDM , SOMR, NBC);
 		AvaiableRovers[2].enqueue(Mount , SOMR);
 	}
@@ -23,6 +33,7 @@ void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int
 
 	for (int i = 0; i < NOER; i++)
 	{
+
 		Rover* Emerg = new Rover('E', CDE, SOER, NBC);
 		AvaiableRovers[0].enqueue(Emerg, SOER);
 	}
@@ -152,9 +163,9 @@ void MarsStation::Execute()
 	
 	UI input(this);
 	ifstream file;
-	file.open("TEST.txt");
+	file.open("TEST3.txt");
 	input.Read(file, EventList);
-	while (!EventList.isEmpty() || !InExecution.isEmpty())
+	while (!EventList.isEmpty() || !InExecution.isEmpty() )
 	{
 		Node<Event>* tempNode;
 		EventList.peek(tempNode);
@@ -162,7 +173,7 @@ void MarsStation::Execute()
 		temp = tempNode->getData();
 		while (temp->getED() == day)
 		{
-			temp->Execute(MountainousMissions, EmeregncyMissions, MountainousOrder, PolarMissions);
+			temp->Execute(MountainousMissions, EmeregncyMissions, MountainousOrder, PolarMissions,StatsArr);
 			EventList.dequeue(tempNode);
 
 			

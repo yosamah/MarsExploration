@@ -3,7 +3,7 @@ Promotion::Promotion(int MID, int ED):Event(ED,MID)
 {
 }
 
-void Promotion::Execute(HashTable<Mission>& Mountainous, PriQ<Mission>& Emergency, Queue<int>& MountainousSort, Queue<Mission>& Polar)
+void Promotion::Execute(HashTable<Mission>& Mountainous, PriQ<Mission>& Emergency, Queue<int>& MountainousSort, Queue<Mission>& Polar,int* Arr)
 {
 	Mission* MissionToPro = new Mission('M', MissionID, -1, -1, -1, -1);
 	Node<Mission>* NodeToPro = new Node<Mission>(MissionToPro, MissionID);
