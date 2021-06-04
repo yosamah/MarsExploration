@@ -4,6 +4,8 @@
 #include "Cancellation.h"
 #include "Promotion.h"
 
+
+
 UI::UI(MarsStation* Mars)
 {
 	pMars = Mars;
@@ -79,4 +81,11 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 			eventList.enqueue(P);
 		}
 	}
+}
+
+void UI::InteractiveMode(HashTable<Mission> Mountainous, PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar, int* Arr) 
+{
+	cout << "Current Day: " << pMars->GetDay() << endl;
+	cout << "7ot el number" <<"Wating Missions: "<< "[" << endl;
+
 }

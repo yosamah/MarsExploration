@@ -38,9 +38,11 @@ private:
 	Queue<Event> EventList;
 	Queue<int> MountainousOrder;
 	HashTable<Mission,101> MountainousMissions;
+	
 	int StatsArr[6];
 
 	int day;
+
 public:
 	MarsStation();
 	void SetAvailableRovers(int , int , int , int, int, int, int,int , int, int);
@@ -52,4 +54,7 @@ public:
 	void MoveToCompMissions();
 	void MoveRover(Mission* mission);
 	void MoveToAvailRover();
+
+
+	int GetDay();
 };

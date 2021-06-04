@@ -4,13 +4,22 @@
 
 MarsStation::MarsStation()
 {
+	
 	day = 1;
 	for (int i=0;i<6;i++)
 	{
 		StatsArr[i] = 0;
 	}
+	
 
 }
+
+int MarsStation::GetDay()
+{
+	return day;
+}
+
+
 void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int SOPR, int SOER,int CDM, int CDP , int CDE, int NBC)
 {
 	StatsArr[0] = NOER;
@@ -165,7 +174,7 @@ void MarsStation::Execute()
 	ifstream file;
 	file.open("TEST3.txt");
 	input.Read(file, EventList);
-	while (!EventList.isEmpty() || !InExecution.isEmpty() )
+	while (!EventList.isEmpty() || !InExecution.isEmpty())
 	{
 		Node<Event>* tempNode;
 		EventList.peek(tempNode);
@@ -173,11 +182,11 @@ void MarsStation::Execute()
 		temp = tempNode->getData();
 		while (temp->getED() == day)
 		{
-			temp->Execute(MountainousMissions, EmeregncyMissions, MountainousOrder, PolarMissions,StatsArr);
+			temp->Execute(MountainousMissions, EmeregncyMissions, MountainousOrder, PolarMissions, StatsArr);
 			EventList.dequeue(tempNode);
 
-			
-			bool check=EventList.peek(tempNode);
+
+			bool check = EventList.peek(tempNode);
 			if (!check)
 				break;
 			temp = tempNode->getData();
@@ -187,7 +196,9 @@ void MarsStation::Execute()
 		MoveToExec();
 		MoveToCompMissions();
 		MoveToAvailRover();
-
+		
+		//UserInterface->InteractiveMode();
+		
 		day++;
 	}
 }
