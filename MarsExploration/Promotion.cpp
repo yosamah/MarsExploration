@@ -18,5 +18,7 @@ void Promotion::Execute(HashTable<Mission>& Mountainous, PriQ<Mission>& Emergenc
 		Mountainous.remove(NodeToPro, MissionID);
 		delete MissionToPro;
 		delete NodeToPro;
+		Arr[5]--;
+		Arr[3]++;
 	}
 }

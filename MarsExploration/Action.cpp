@@ -367,6 +367,8 @@ void Action::AutoPromote(HashTable<Mission>& Mountainous, Queue<int>& Mountainou
 				tempMission->setMissionType('E');
 				Emergency.enqueue(tempMission, -priority);
 				StatsArr[6]++;
+				StatsArr[3]++;
+				StatsArr[5]--;
 				check = MountainousSort.peek(key);
 				tempNode = NULL;
 				if (check)

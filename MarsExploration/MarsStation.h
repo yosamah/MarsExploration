@@ -67,7 +67,7 @@ public:
 
 	int GetAvgExecDays();
 	int GetAvgWaitDays();
-	int GetAutoPromotedPercent();
+	float GetAutoPromotedPercent();
 	void SetAutoPro(int);
 	void AutoPromote();
 

@@ -84,6 +84,24 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 	}
 }
 
+void UI::Write(ofstream& file, Queue<Mission> CompletedMissions, int* StatsArr)
+{
+	file << "CD\tID\tFD\tWD\tED" << endl;
+	Queue<int> Temp;
+	Node<Mission>* TempMission;
+
+	while (!CompletedMissions.isEmpty())
+	{
+		CompletedMissions.dequeue(TempMission);
+
+		file << TempMission->getData()->getCD() << "\t" << TempMission->getData()->getID() << "\t" << TempMission->getData()->getFormulationDate() << "\t" << TempMission->getData()->getTotalMissionDur() << "\t" << TempMission->getData()->getED() << endl;
+	}
+	file << "Missions: " << StatsArr[3] + StatsArr[4] + StatsArr[5] << " [M: " << StatsArr[5] << ", P: " << StatsArr[4] << ", E: " << StatsArr[3] << "]\n";
+	file << "Rovers: " << StatsArr[0] + StatsArr[1] + StatsArr[2] << " [M: " << StatsArr[2] << ", P: " << StatsArr[1] << ", E: " << StatsArr[0] << "]\n";
+	file << "Avg Wait = " << pMars->GetAvgWaitDays() << ", " << "Avg Exec = " << pMars->GetAvgExecDays() << endl;
+	file << "Auto-promoted: " << pMars->GetAutoPromotedPercent();
+}
+
 void UI::PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar)
 {
 	int CountM = 0;
