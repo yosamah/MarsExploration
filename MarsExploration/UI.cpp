@@ -110,68 +110,70 @@ void UI::PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mi
 	int CountW = 0;
 	int CountInEx = 0;
 
-	Queue<int> Temp;
+	Queue<int> TempM;
+	Queue<Mission> TempEP;
 	Node<int>* TempID;
 	Node<Mission>* TempMission;
 	int TempInt;
-	while (!Emergency.isEmpty())
-	{
-		Emergency.dequeue(TempMission);
-		int ID = TempMission->getData()->getID();
-		CountE++;
-		CountW++;
-		Temp.enqueue(&ID);
-	}
-	while (!Polar.isEmpty())
-	{
-		Polar.dequeue(TempMission);
-		int ID = TempMission->getData()->getID();
-		CountP++;
-		CountW++;
-		Temp.enqueue(&ID);
-	}
+	
 	while (!MountainousSort.isEmpty())
 	{
 		MountainousSort.dequeue(TempID);
 		CountM++;
 		CountW++;
-		Temp.enqueue(TempID->getData());
+		TempM.enqueue(TempID->getData());
 	}
+
+	while (!Emergency.isEmpty())
+	{
+		Emergency.dequeue(TempMission);
+		CountE++;
+		CountW++;
+		TempEP.enqueue(TempMission->getData());
+	}
+	while (!Polar.isEmpty())
+	{
+		Polar.dequeue(TempMission);
+		CountP++;
+		CountW++;
+		TempEP.enqueue(TempMission->getData());
+	}
+
 
 	cout << "Current Day: " << pMars->GetDay() << endl;
 	cout << CountW << " Waiting Missions: ";
-	if (Temp.isEmpty())
+	if (TempM.isEmpty() && TempEP.isEmpty())
 	{
 		cout << "[ ] ( ) { } ";
 	}
-	while (!Temp.isEmpty())
+	while (!TempEP.isEmpty())
 	{
 		cout << "[ ";
 		for (int i = 0; i < CountE; i++)
 		{
-			Temp.dequeue(TempID);
-			int* ids = TempID->getData();
-			cout << (*ids) << ",";
+			TempEP.dequeue(TempMission);
+			cout << TempMission->getData()->getID() << ",";
 
 		}
 		cout << "\b ]" << "  ";
 		cout << "( ";
 		for (int i = 0; i < CountP; i++)
 		{
-			Temp.dequeue(TempID);
-			int* ids = TempID->getData();
-			cout << (*ids) << ",";
+			TempEP.dequeue(TempMission);
+			cout << TempMission->getData()->getID() << ",";
 		}
 		cout << "\b )" << "  ";
-		cout << "{ ";
-		for (int i = 0; i < CountM; i++)
-		{
-			Temp.dequeue(TempID);
-			int* ids = TempID->getData();
-			cout << (*ids) << ",";
-		}
-		cout << "\b }";
+		
 	}
+	cout << "{ ";
+	for (int i = 0; i < CountM; i++)
+	{
+		TempM.dequeue(TempID);
+		int* ids = TempID->getData();
+		cout << (*ids) << ",";
+	}
+	cout << "\b }";
+
 	cout << endl;
 	cout << "--------------------------------------" << endl;
 }
