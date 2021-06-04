@@ -17,7 +17,7 @@ void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, i
 		if (cDay > d)
 		{
 			tempPriQ.enqueue(tempMission, tempNode->getKey());
-			
+
 		}
 		else
 		{
@@ -35,16 +35,16 @@ void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, i
 						tempNode = NULL;
 						break;
 					}
-						
+
 				}
-				else 
+				else
 				{
 					tempMission->increamentWaitingDays();
 					tempPriQ.enqueue(tempMission, tempNode->getKey());
 					break;
 
 				}
-				
+
 			}
 		}
 		while (Emergency.dequeue(tempNode))
@@ -192,7 +192,7 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 		MountainousSort.enqueue((key->getData()));
 	}
 }
-	
+
 
 // without maintainance
 bool Action::assignRover_E(PriQ<Rover>* roverArray, Mission*& tempMission, char type)
@@ -209,7 +209,7 @@ bool Action::assignRover_E(PriQ<Rover>* roverArray, Mission*& tempMission, char 
 	if (type == 'M')
 		return false;
 	test = assignRover_P(roverArray, tempMission);
-	if(!test)
+	if (!test)
 		test = assignRover_M(roverArray, tempMission);
 	return test;
 }
@@ -222,7 +222,7 @@ bool Action::assignRover_P(PriQ<Rover>* roverArray, Mission*& tempMission)
 		// nen2el eel rover
 		tempMission->setRover(tempNode->getData());
 		tempNode->getData()->increamentMissionCount();
-		
+
 	}
 	return test;
 
@@ -243,7 +243,7 @@ bool Action::assignRover_M(PriQ<Rover>* roverArray, Mission*& tempMission)
 
 }
 
-void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& InExecution)
+void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& InExecution, int& Exec, int& Wait)
 {
 	Node<Mission>* tempNode = NULL;
 	Mission* tempMission;
@@ -261,6 +261,8 @@ void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& Mountaino
 			if (tempMission->getRover())
 			{
 				CD = tempMission->getTotalMissionDur() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+				Exec += tempMission->getTotalMissionDur();
+				Wait += tempMission->getWaitingDay();
 				InExecution.enqueue(tempMission, CD);
 				MountainousSort.dequeue(key);
 			}
@@ -269,14 +271,14 @@ void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& Mountaino
 				Mountainous.insert(tempMission, *(key->getData()));
 				break;
 			}
-			
+
 		}
 		else
 			MountainousSort.dequeue(key);
 	}
-	
+
 }
-void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution)
+void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution, int& Exec, int& Wait)
 {
 	Node<Mission>* tempNode;
 	Mission* tempMission;
@@ -289,6 +291,8 @@ void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution)
 		if (tempMission->getRover())
 		{
 			CD = tempMission->getTotalMissionDur() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+			Exec += tempMission->getTotalMissionDur();
+			Wait += tempMission->getWaitingDay();
 			InExecution.enqueue(tempMission, CD);
 			Polar.dequeue(tempNode);
 		}
@@ -298,9 +302,9 @@ void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution)
 		}
 
 	}
-	
+
 }
-void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution)
+void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution, int& Exec, int& Wait)
 {
 	Node<Mission>* tempNode;
 	Mission* tempMission;
@@ -313,6 +317,8 @@ void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution)
 		if (tempMission->getRover())
 		{
 			CD = tempMission->getTotalMissionDur() + tempMission->getWaitingDay() + tempMission->getFormulationDate();
+			Exec += tempMission->getTotalMissionDur();
+			Wait += tempMission->getWaitingDay();
 			InExecution.enqueue(tempMission, CD);
 			Emergency.dequeue(tempNode);
 		}
@@ -322,4 +328,57 @@ void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution)
 		}
 
 	}
+}
+void Action::AutoPromote(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& Emergency, int AutoPro,int*StatsArr)
+{
+	Node<Mission>* tempNode = NULL;
+	Mission* tempMission;
+	int WD = -1;
+	Queue<int> tempQ;
+	Node<int>* key=NULL;
+	MountainousSort.peek(key);
+	if (key)
+	{ 
+		bool check = Mountainous.search(tempNode, *(key->getData()));
+		while (true)
+		{
+
+			while (!check)
+			{
+				tempNode = NULL;
+				MountainousSort.dequeue(key);
+				check =MountainousSort.peek(key);
+				if (check)
+					check = Mountainous.search(tempNode, *(key->getData()));
+				else
+					break;
+			}
+			if (tempNode)
+			{
+				tempMission = tempNode->getData();
+				WD = tempMission->getWaitingDay();
+			}
+			else
+				break;
+			if (WD == AutoPro)
+			{
+				Mountainous.remove(tempNode, *(key->getData()));
+				int priority = (tempMission->getTargetLocation() * tempMission->getMissionDuration() * tempMission->getSignificance()) / (tempMission->getTargetLocation() + tempMission->getMissionDuration() + tempMission->getSignificance());
+				tempMission->setMissionType('E');
+				Emergency.enqueue(tempMission, -priority);
+				StatsArr[6]++;
+				check = MountainousSort.peek(key);
+				tempNode = NULL;
+				if (check)
+					check = Mountainous.search(tempNode, *(key->getData()));
+				else
+					break;
+
+			}
+			else
+				break;
+			
+		}
+	}
+	
 }

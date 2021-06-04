@@ -5,12 +5,26 @@
 MarsStation::MarsStation()
 {
 	day = 1;
-	for (int i=0;i<6;i++)
+	NumberOfExec = 0;
+	NumberOfWait = 0;
+	AutoPro = 0;
+	for (int i=0;i<7;i++)
 	{
 		StatsArr[i] = 0;
 	}
-
+	
 }
+void MarsStation::SetAutoPro(int A)
+{
+	AutoPro = A;
+}
+int MarsStation::GetAvgExecDays() //Should be used after all loops (calculations occur after end of while loop)
+{ return NumberOfExec; }
+
+int MarsStation::GetAvgWaitDays() //Should be used after all loops (calculations occur after end of while loop)
+{ return NumberOfWait; }
+int MarsStation::GetAutoPromotedPercent()
+{ return ((StatsArr[6] / StatsArr[5]) * 100); }
 void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int SOPR, int SOER,int CDM, int CDP , int CDE, int NBC)
 {
 	StatsArr[0] = NOER;
@@ -50,9 +64,9 @@ void MarsStation::checkAndAssign()
 void MarsStation::MoveToExec()
 {
 	Action act;
-	act.MoveToExec_E(EmeregncyMissions, InExecution);
-	act.MoveToExec_P(PolarMissions, InExecution);
-	act.MoveToExec_M(MountainousMissions, MountainousOrder, InExecution);
+	act.MoveToExec_E(EmeregncyMissions, InExecution,NumberOfExec, NumberOfWait);
+	act.MoveToExec_P(PolarMissions, InExecution, NumberOfExec, NumberOfWait);
+	act.MoveToExec_M(MountainousMissions, MountainousOrder, InExecution, NumberOfExec, NumberOfWait);
 
 }
 void MarsStation::MoveToCompMissions()
@@ -156,16 +170,20 @@ void MarsStation::MoveRover(Mission* tempM)
 	tempM->setRover(NULL);
 
 }
-
+void MarsStation::AutoPromote()
+{
+	Action act;
+	act.AutoPromote(MountainousMissions, MountainousOrder, EmeregncyMissions, AutoPro,StatsArr);
+}
 
 void MarsStation::Execute()
 {
 	
 	UI input(this);
 	ifstream file;
-	file.open("TEST3.txt");
+	file.open("TEST.txt");
 	input.Read(file, EventList);
-	while (!EventList.isEmpty() || !InExecution.isEmpty() )
+	while (!EventList.isEmpty() || !InExecution.isEmpty()|| !MountainousOrder.isEmpty() || !PolarMissions.isEmpty() || !EmeregncyMissions.isEmpty() )
 	{
 		Node<Event>* tempNode;
 		EventList.peek(tempNode);
@@ -187,7 +205,9 @@ void MarsStation::Execute()
 		MoveToExec();
 		MoveToCompMissions();
 		MoveToAvailRover();
-
+		AutoPromote();
 		day++;
 	}
+	NumberOfExec /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
+	NumberOfWait /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
 }
