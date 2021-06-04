@@ -14,6 +14,8 @@ private:
 	int FormulationDate;
 	int WaitingDays;
 	int TotalMissionDuration;
+	int ExecutionDays;
+	int CompleteDay;
 public:
 	/* Constructor */
 	Mission(char MissionType,int ID, int TargetLocation, int MissionDuration, int FormulationDate, int Significance,Rover* r = NULL);
@@ -43,5 +45,12 @@ public:
 	int getWaitingDay();
 
 	int getTotalMissionDur();
+
+	int getCD();
+	void setCD(int);
+
+	int getED();
+	void setED(int);
+
 };
 

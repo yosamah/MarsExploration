@@ -89,3 +89,21 @@ int Mission::getWaitingDay()
 {
 	return WaitingDays;
 }
+
+int Mission::getCD()
+{
+	return CompleteDay;
+}
+void Mission::setCD(int CD)
+{
+	CompleteDay = CD;
+}
+
+int Mission::getED()
+{
+	return ExecutionDays;
+}
+void Mission::setED(int ED)
+{
+	ExecutionDays = ED;
+}
