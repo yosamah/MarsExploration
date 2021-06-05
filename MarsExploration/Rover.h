@@ -37,8 +37,11 @@ public:
 	bool moveToAvail(int day);
 	
 	int getID();
-	
 	void setID(int);
+
+
+	int getMissionCountMain();
+	void setCheckUpEnter(int d);
 
 
 };

@@ -124,49 +124,61 @@ void MarsStation::MoveToCompMissions()
 
 }
 
+void MarsStation::checkInMain()
+{
+	int i = rand() % 101;
+	// nezbat el range.
+	if (i >= 15 && i <= 35)
+	{
+		int j = rand() % 3;
+		Node<Rover>* tempNode = NULL;
+		Rover* tempRover;
+		AvaiableRovers[j].dequeue(tempNode);
+		if (tempNode)
+		{
+			tempRover = tempNode->getData();
+			if (tempRover->getMissionCountMain())
+			{
+				tempRover->setMaintain();
+				tempRover->setCheckUpEnter(day);
+				AvaiableRovers[j + 3].enqueue(tempRover, (day + tempRover->getCheckUpDuration()));
+			}
+			else
+				AvaiableRovers[j].enqueue(tempRover, -tempRover->getSpeed());
+
+		}
+
+	}
+	
+}
+
 void MarsStation::MoveToAvailRover()
 {
 	Node<Rover>* tempNode;
 	Rover* tempR;
-	while (!RoversInCheckUp[0].isEmpty())
+	for (int i = 0; i < 5; i++)
 	{
-		RoversInCheckUp[0].peek(tempNode);
-		tempR = tempNode->getData();
-		if (tempR->moveToAvail(day))
+		while (!RoversInCheckUp[i].isEmpty())
 		{
-			AvaiableRovers[0].enqueue(tempR, tempR->getSpeed());
-			RoversInCheckUp[0].dequeue(tempNode);
-		}
-		else
-			break;
+			tempNode = NULL;
+			RoversInCheckUp[i].peek(tempNode);
+			if (tempNode)
+				tempR = tempNode->getData();
+			else
+				break;
+			if (tempNode && tempR->moveToAvail(day))
+			{
+				if (i > 2)
+					tempR->resetMaintain();
+				AvaiableRovers[i].enqueue(tempR, tempR->getSpeed());
+				RoversInCheckUp[i].dequeue(tempNode);
+			}
+			else
+				break;
 
-	}
-	while (!RoversInCheckUp[1].isEmpty())
-	{
-		RoversInCheckUp[1].peek(tempNode);
-		tempR = tempNode->getData();
-		if (tempR->moveToAvail(day))
-		{
-			AvaiableRovers[1].enqueue(tempR, tempR->getSpeed());
-			RoversInCheckUp[1].dequeue(tempNode);
 		}
-		else
-			break;
-
 	}
-	while (!RoversInCheckUp[2].isEmpty())
-	{
-		RoversInCheckUp[2].peek(tempNode);
-		tempR = tempNode->getData();
-		if (tempR->moveToAvail(day))
-		{
-			AvaiableRovers[2].enqueue(tempR, tempR->getSpeed());
-			RoversInCheckUp[2].dequeue(tempNode);
-		}
-		else
-			break;
 
-	}
 }
 void MarsStation::MoveRover(Mission* tempM)
 {
@@ -204,14 +216,15 @@ void MarsStation::Execute()
 	UI input(this);
 	UI output(this);
 	ifstream InFile;
-	InFile.open("TEST4.txt");
+	InFile.open("TEST.txt");
 	input.Read(InFile, EventList);
 	char Choice;
 
 	cout << "Select Mode:" << endl;
 	cout << "i for interactive, s for Step-By-Step, x for Silent " << endl;
 	cin >> Choice;
-
+	if (Choice == 'i')
+		cout << "Press enter to proceed" << endl;
 
 	while (!EventList.isEmpty() || !InExecution.isEmpty() || !MountainousOrder.isEmpty() || !PolarMissions.isEmpty() || !EmeregncyMissions.isEmpty())
 	{
@@ -231,11 +244,13 @@ void MarsStation::Execute()
 			temp = tempNode->getData();
 		}
 
+
+		checkInMain();
 		checkAndAssign();
 		MoveToExec();
 		MoveToCompMissions();
 		MoveToAvailRover();
-
+	//checkInMain();
 		AutoPromote();
 
 		if (Choice == 'i')

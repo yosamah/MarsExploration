@@ -71,5 +71,7 @@ public:
 	void SetAutoPro(int);
 	void AutoPromote();
 
+	void checkInMain();
+
 
 };
