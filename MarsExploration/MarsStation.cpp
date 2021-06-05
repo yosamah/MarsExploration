@@ -28,12 +28,12 @@ void MarsStation::SetAutoPro(int A)
 {
 	AutoPro = A;
 }
-int MarsStation::GetAvgExecDays() //Should be used after all loops (calculations occur after end of while loop)
+float MarsStation::GetAvgExecDays() //Should be used after all loops (calculations occur after end of while loop)
 {
 	return NumberOfExec;
 }
 
-int MarsStation::GetAvgWaitDays() //Should be used after all loops (calculations occur after end of while loop)
+float MarsStation::GetAvgWaitDays() //Should be used after all loops (calculations occur after end of while loop)
 {
 	return NumberOfWait;
 }
@@ -42,7 +42,7 @@ float MarsStation::GetAutoPromotedPercent()
 	return (((float)StatsArr[6] / ((float)StatsArr[6] + (float)StatsArr[5]))) * 100;
 }
 
-void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int SOPR, int SOER, int CDM, int CDP, int CDE, int NBC)
+void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int* SOMR, int* SOPR, int* SOER, int CDM, int CDP, int CDE, int NBC)
 {
 	StatsArr[0] = NOER;
 	StatsArr[1] = NOPR;
@@ -52,27 +52,27 @@ void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int SOMR, int
 	for (int i = 0; i < NOMR; i++)
 	{
 
-		Rover* Mount = new Rover('M', CDM, SOMR, NBC);
+		Rover* Mount = new Rover('M', CDM, SOMR[i], NBC);
 		Mount->setID(id);
 		id++;
-		AvaiableRovers[2].enqueue(Mount, SOMR);
+		AvaiableRovers[2].enqueue(Mount, -SOMR[i]);
 	}
 
 	for (int i = 0; i < NOPR; i++)
 	{
-		Rover* Polar = new Rover('P', CDP, SOPR, NBC);
+		Rover* Polar = new Rover('P', CDP, SOPR[i], NBC);
 		Polar->setID(id);
 		id++;
-		AvaiableRovers[1].enqueue(Polar, SOPR);
+		AvaiableRovers[1].enqueue(Polar, -SOPR[i]);
 	}
 
 	for (int i = 0; i < NOER; i++)
 	{
 
-		Rover* Emerg = new Rover('E', CDE, SOER, NBC);
+		Rover* Emerg = new Rover('E', CDE, SOER[i], NBC);
 		Emerg->setID(id);
 		id++;
-		AvaiableRovers[0].enqueue(Emerg, SOER);
+		AvaiableRovers[0].enqueue(Emerg, -SOER[i]);
 	}
 }
 
@@ -204,7 +204,7 @@ void MarsStation::Execute()
 	UI input(this);
 	UI output(this);
 	ifstream InFile;
-	InFile.open("TEST.txt");
+	InFile.open("TEST4.txt");
 	input.Read(InFile, EventList);
 	char Choice;
 
@@ -249,8 +249,8 @@ void MarsStation::Execute()
 			//for (int i = 0; i < 1000000000; i++)
 			//{
 				//i++;
-			//}
-			Sleep(1000); // included <windows.h>
+			//} // AMIN AL M3AFEN
+			Sleep(1000); // included <windows.h> // AMIN AL NDYF
 			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
 		}
 

@@ -6,6 +6,6 @@ int main()
 {
 	MarsStation mainP;
 	mainP.Execute();
-	cout << "FINISH";
+	cout << "FINISH lagl 3yon YOSAMAH";
 	return 0;
 }

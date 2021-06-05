@@ -13,15 +13,20 @@ UI::UI(MarsStation* Mars)
 
 void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eof()
 {
+	/*Checking character*/
+	
+
 	/*The type of each rover*/
 	int NumOfPolarRover;
 	int NumOfMountRover;
 	int NumOfEmergRover;
 
+	file >> NumOfMountRover >> NumOfPolarRover >> NumOfEmergRover;
+
 	/*The speed of each rover*/
-	int SpeedOfPolarRover;
-	int SpeedOfMountRover;
-	int SpeedOfEmergRover;
+	int* SpeedOfPolarRover = new int[NumOfPolarRover];
+	int* SpeedOfMountRover = new int[NumOfMountRover];
+	int* SpeedOfEmergRover = new int[NumOfEmergRover];
 
 	/*The number of missions needed before check up*/
 	int BeforeCheckup; 
@@ -31,15 +36,21 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 	int CheckUpDurationMount;
 	int CheckUpDurationEmerg;
 
-	/* TODO: For bonus the different speeds add char "B" and check on in to read differently */
-	file >> NumOfMountRover >> NumOfPolarRover >> NumOfEmergRover;
-	file >> SpeedOfMountRover >> SpeedOfPolarRover >> SpeedOfEmergRover;
+	/*Loop for different rover speed*/
+	for (int i = 0; i < NumOfMountRover; i++)
+		file >> SpeedOfMountRover[i];
+
+	for (int i = 0; i < NumOfPolarRover; i++)
+		file >> SpeedOfPolarRover[i];
+
+	for (int i = 0; i < NumOfEmergRover; i++)
+		file >> SpeedOfEmergRover[i];
+
 	file >> BeforeCheckup;
 	file >> CheckUpDurationMount >> CheckUpDurationPolar >> CheckUpDurationEmerg;
 	pMars->SetAvailableRovers(NumOfMountRover, NumOfPolarRover, NumOfEmergRover, SpeedOfMountRover, SpeedOfPolarRover, SpeedOfEmergRover, CheckUpDurationMount, CheckUpDurationPolar, CheckUpDurationEmerg, BeforeCheckup);
 	
-	///////////////////       /////////////////////////
-	
+	/*Reading the events information*/
 	int AutoPromotion;
 
 	int NumOfEvents;
@@ -54,7 +65,7 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 	for (int i = 0; i < NumOfEvents; i++)
 	{
 		file >> EventType;
-
+		/*The Info for formulation event*/
 		if (EventType == 'F')
 		{
 			char MissionType;
@@ -67,6 +78,7 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 			eventList.enqueue(F);
 
 		}
+		/*The Info for cancellation event*/
 		else if (EventType == 'X')
 		{
 			int ED,ID;
@@ -74,6 +86,7 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 			Cancellation* X =new Cancellation(ID,ED);
 			eventList.enqueue(X);
 		}
+		/*The Info for promotion event*/
 		else if (EventType == 'P')
 		{
 			int ED, ID;
@@ -99,7 +112,7 @@ void UI::Write(ofstream& file, Queue<Mission> CompletedMissions, int* StatsArr)
 	file << "Missions: " << StatsArr[3] + StatsArr[4] + StatsArr[5] << " [M: " << StatsArr[5] << ", P: " << StatsArr[4] << ", E: " << StatsArr[3] << "]\n";
 	file << "Rovers: " << StatsArr[0] + StatsArr[1] + StatsArr[2] << " [M: " << StatsArr[2] << ", P: " << StatsArr[1] << ", E: " << StatsArr[0] << "]\n";
 	file << "Avg Wait = " << pMars->GetAvgWaitDays() << ", " << "Avg Exec = " << pMars->GetAvgExecDays() << endl;
-	file << "Auto-promoted: " << pMars->GetAutoPromotedPercent();
+	file << "Auto-promoted: " << pMars->GetAutoPromotedPercent() << "%";
 }
 
 void UI::PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar)

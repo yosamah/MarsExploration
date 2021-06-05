@@ -243,7 +243,7 @@ bool Action::assignRover_M(PriQ<Rover>* roverArray, Mission*& tempMission)
 
 }
 
-void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& InExecution, int& Exec, int& Wait)
+void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& InExecution, float& Exec, float& Wait)
 {
 	Node<Mission>* tempNode = NULL;
 	Mission* tempMission;
@@ -278,7 +278,7 @@ void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& Mountaino
 	}
 
 }
-void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution, int& Exec, int& Wait)
+void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution, float& Exec, float& Wait)
 {
 	Node<Mission>* tempNode;
 	Mission* tempMission;
@@ -304,7 +304,7 @@ void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution, int
 	}
 
 }
-void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution, int& Exec, int& Wait)
+void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution, float& Exec, float& Wait)
 {
 	Node<Mission>* tempNode;
 	Mission* tempMission;

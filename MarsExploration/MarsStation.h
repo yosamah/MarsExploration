@@ -44,15 +44,15 @@ private:
 	HashTable<Mission,101> MountainousMissions;
 	
 
-	int NumberOfExec;
-	int NumberOfWait;
+	float NumberOfExec;
+	float NumberOfWait;
 	int StatsArr[7];
 	int AutoPro;
 	int day;
 
 public:
 	MarsStation();
-	void SetAvailableRovers(int , int , int , int, int, int, int,int , int, int);
+	void SetAvailableRovers(int , int , int , int*, int*, int*, int,int , int, int);
 
 	void Execute();
 	void checkAndAssign();
@@ -65,8 +65,8 @@ public:
 
 	int GetDay();
 
-	int GetAvgExecDays();
-	int GetAvgWaitDays();
+	float GetAvgExecDays();
+	float GetAvgWaitDays();
 	float GetAutoPromotedPercent();
 	void SetAutoPro(int);
 	void AutoPromote();
