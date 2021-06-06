@@ -43,5 +43,7 @@ public:
 	int getMissionCountMain();
 	void setCheckUpEnter(int d);
 
+	bool getInMain();
+
 
 };

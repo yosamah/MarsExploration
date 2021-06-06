@@ -52,6 +52,12 @@ int Rover::getMissionCount(int d)
 		checkUpEnter = d;
 		return -1;
 	}	
+	if (InMaintainance)
+	{
+		resetMaintain();
+		return -1;
+	}
+		
 	return MissionCount;
 }
 int Rover::getMissionCountMain()
@@ -73,6 +79,7 @@ void Rover::resetMaintain()
 	if (InMaintainance)
 	{
 		Speed = Speed * 2;
+		MissionCount = 0;
 		InMaintainance = false;
 	}
 }
@@ -93,4 +100,10 @@ void Rover::setID(int id)
 void Rover::setCheckUpEnter(int d)
 {
 	checkUpEnter = d;
+}
+
+
+bool Rover::getInMain()
+{
+	return InMaintainance;
 }

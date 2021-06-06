@@ -137,7 +137,7 @@ void MarsStation::checkInMain()
 		if (tempNode)
 		{
 			tempRover = tempNode->getData();
-			if (tempRover->getMissionCountMain())
+			if (tempRover->getMissionCountMain() != 0)
 			{
 				tempRover->setMaintain();
 				tempRover->setCheckUpEnter(day);
