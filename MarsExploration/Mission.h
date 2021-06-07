@@ -20,6 +20,7 @@ public:
 	/* Constructor */
 	Mission(char MissionType,int ID, int TargetLocation, int MissionDuration, int FormulationDate, int Significance,Rover* r = NULL);
 	
+	/*Setters and getters for all the missions' info*/
 	void setRover(Rover*);
 	Rover* getRover();
 

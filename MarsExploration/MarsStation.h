@@ -52,26 +52,39 @@ private:
 
 public:
 	MarsStation();
+	/*Function the sets the available rovers according the input file from the UI*/
 	void SetAvailableRovers(int , int , int , int*, int*, int*, int,int , int, int);
 
+	/*The main function that runs the code*/
 	void Execute();
+
+	/*A function that checks all the waiting missions and assign them if their formulation day is the current day*/
 	void checkAndAssign();
 
+	/*A function that checks the missions that have an assigned rover and move them to the execution list*/
 	void MoveToExec();
+
+	/*A function that checks if the current day equals the completion day of a certain mission to be moved to completed mission list*/
 	void MoveToCompMissions();
+
+	/*Functions that move the rovers between lists*/
 	void MoveRover(Mission* mission);
 	void MoveToAvailRover();
 
-
+	/*Getter for the current day*/
 	int GetDay();
 
+	/*Getters for the average execution and waiting days*/
 	float GetAvgExecDays();
 	float GetAvgWaitDays();
+
+	/*getter for the auto promotion precentage*/
 	float GetAutoPromotedPercent();
 	void SetAutoPro(int);
+
+	/*Function that auto promotes mountainuous missions after a certain period of time*/
 	void AutoPromote();
 
+	/*Function that checkes if the rover is in maintenance*/
 	void checkInMain();
-
-
 };

@@ -1,10 +1,9 @@
 #include "MarsStation.h"
 #include<windows.h>
 
-
+/*Constructor*/
 MarsStation::MarsStation()
 {
-
 	day = 1;
 	NumberOfExec = 0;
 	NumberOfWait = 0;
@@ -13,16 +12,13 @@ MarsStation::MarsStation()
 	{
 		StatsArr[i] = 0;
 	}
-
-
-
 }
 
+////////////////////////////////////////////////////////////
 int MarsStation::GetDay()
 {
 	return day;
 }
-
 
 void MarsStation::SetAutoPro(int A)
 {
@@ -42,13 +38,17 @@ float MarsStation::GetAutoPromotedPercent()
 	return (((float)StatsArr[6] / ((float)StatsArr[6] + (float)StatsArr[5]))) * 100;
 }
 
+////////////////////////////////////////////////////////////
+
 void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int* SOMR, int* SOPR, int* SOER, int CDM, int CDP, int CDE, int NBC)
 {
+	/*Saving the number of each rover for each type*/
 	StatsArr[0] = NOER;
 	StatsArr[1] = NOPR;
 	StatsArr[2] = NOMR;
 	int id = 1;
 
+	/*Looping on each rover type and assign them to the available rover list*/
 	for (int i = 0; i < NOMR; i++)
 	{
 
@@ -76,6 +76,8 @@ void MarsStation::SetAvailableRovers(int NOMR, int NOPR, int NOER, int* SOMR, in
 	}
 }
 
+////////////////////////////////////////////////////////////
+
 void MarsStation::checkAndAssign()
 {
 	Action act;
@@ -92,6 +94,9 @@ void MarsStation::MoveToExec()
 	act.MoveToExec_M(MountainousMissions, MountainousOrder, InExecution, NumberOfExec, NumberOfWait);
 
 }
+
+////////////////////////////////////////////////////////////
+
 void MarsStation::MoveToCompMissions()
 {
 	Node<Mission>* tempNode;
@@ -119,10 +124,9 @@ void MarsStation::MoveToCompMissions()
 		tempMission = tempNode->getData();
 		CompletedMissions.enqueue(tempMission);
 	}
-
-
-
 }
+
+////////////////////////////////////////////////////////////
 
 void MarsStation::checkInMain()
 {
@@ -139,7 +143,7 @@ void MarsStation::checkInMain()
 		if (tempNode)
 		{
 			tempRover = tempNode->getData();
-			/*If the rover just got out of check up fa msh hy5osh 3shan msh na2sa 8aba2 hy5osh mrtyn leh y3ny !!!!!*/
+			/*If the rover just got out of check up*/
 			if (tempRover->getMissionCountMain() != 0)
 			{
 				tempRover->setMaintain();
@@ -149,12 +153,11 @@ void MarsStation::checkInMain()
 			}
 			else
 				AvaiableRovers[j].enqueue(tempRover, -tempRover->getSpeed());
-
 		}
-
 	}
-
 }
+
+////////////////////////////////////////////////////////////
 
 void MarsStation::MoveToAvailRover()
 {
@@ -204,9 +207,11 @@ void MarsStation::MoveToAvailRover()
 					break;
 			}
 		}
-
 	}
 }
+
+////////////////////////////////////////////////////////////
+
 void MarsStation::MoveRover(Mission* tempM)
 {
 	Rover* tempRover = tempM->getRover();
@@ -232,6 +237,9 @@ void MarsStation::MoveRover(Mission* tempM)
 	tempM->setRover(NULL);
 
 }
+
+////////////////////////////////////////////////////////////
+
 void MarsStation::AutoPromote()
 {
 	Action act;
@@ -247,11 +255,6 @@ void MarsStation::Execute()
 	input.Read(InFile, EventList);
 	char Choice = input.getMode();
 
-	//cout << "Select Mode:" << endl;
-	//cout << "i for interactive, s for Step-By-Step, x for Silent " << endl;
-	//cin >> Choice;
-	//if (Choice == 'i')
-	//cout << "Press enter to proceed" << endl;
 	if (AvaiableRovers[0].isEmpty() && AvaiableRovers[1].isEmpty() && AvaiableRovers[2].isEmpty())
 	{
 		return;
@@ -275,35 +278,27 @@ void MarsStation::Execute()
 			temp = tempNode->getData();
 		}
 
-
 		checkInMain();
 		checkAndAssign();
 		MoveToExec();
 		MoveToCompMissions();
 		MoveToAvailRover();
-		//checkInMain();
 		AutoPromote();
-
 
 		if (Choice == 'i')
 		{
+			/*Proceedes when (ENTER) is clicked*/
 			cin.ignore();
-
 			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], AvaiableRovers[3], AvaiableRovers[4], AvaiableRovers[5], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
 		}
 		else if (Choice == 's')
 		{
-			//for (int i = 0; i < 1000000000; i++)
-			//{
-				//i++;
-			//} 
-			Sleep(1000); // included <windows.h> 
+			/*Pauses the console for one second between each day*/
+			Sleep(1000);
 			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], AvaiableRovers[3], AvaiableRovers[4], AvaiableRovers[5], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
 		}
 
-
 		day++;
-
 	}
 	if (Choice == 'x')
 	{
@@ -316,5 +311,6 @@ void MarsStation::Execute()
 	ofstream OutFile;
 	OutFile.open("OutputFile.txt");
 	output.Write(OutFile, CompletedMissions, StatsArr);
-
 }
+
+////////////////////////////////////////////////////////////
