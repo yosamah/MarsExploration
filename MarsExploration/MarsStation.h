@@ -56,12 +56,11 @@ public:
 
 	void Execute();
 	void checkAndAssign();
-
+	
 	void MoveToExec();
 	void MoveToCompMissions();
 	void MoveRover(Mission* mission);
 	void MoveToAvailRover();
-
 
 	int GetDay();
 
