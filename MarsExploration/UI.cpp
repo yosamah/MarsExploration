@@ -9,10 +9,18 @@
 UI::UI(MarsStation* Mars)
 {
 	pMars = Mars;
+	//mode = 'n';
 }
 
 void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eof()
 {
+	char Choice;
+	cout << "Select Mode:" << endl;
+	cout << "i for interactive, s for Step-By-Step, x for Silent " << endl;
+	cin >> Choice;
+	setMode(Choice);
+	if (Choice == 'i')
+		cout << "Press enter to proceed" << endl;
 	/*Checking character*/
 	
 
@@ -74,9 +82,21 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 			file >> MissionType;
 			file >> ED >> ID >> Location >> MDUR >> Signif;
 
-			Formulation* F = new Formulation(MissionType,Location,MDUR,Signif,ID,ED);
-			eventList.enqueue(F);
-
+			if (NumOfPolarRover != 0 && MissionType == 'P')
+			{
+				Formulation* F = new Formulation(MissionType, Location, MDUR, Signif, ID, ED);
+				eventList.enqueue(F);
+			}
+			if((NumOfEmergRover!=0 || NumOfMountRover != 0) && MissionType=='M')
+			{
+				Formulation* F = new Formulation(MissionType, Location, MDUR, Signif, ID, ED);
+				eventList.enqueue(F);
+			}
+			if (MissionType == 'E')
+			{
+				Formulation* F = new Formulation(MissionType, Location, MDUR, Signif, ID, ED);
+				eventList.enqueue(F);
+			}
 		}
 		/*The Info for cancellation event*/
 		else if (EventType == 'X')
@@ -262,7 +282,7 @@ void UI::PrintInExecution(PriQ<Mission> InExecution)
 	cout << "--------------------------------------" << endl;
 }
 
-void UI::PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM )
+void UI::PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM,char c)
 {
 	int CountR = 0;
 	int CountM = 0;
@@ -295,7 +315,15 @@ void UI::PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP,
 		CountM++;
 		CountR++;
 	}
-	cout << CountR << " Available Rovers: ";
+	if (c == 'A')
+	{
+		cout << CountR << " Available Rovers: ";
+	}
+	else
+	{
+		cout << CountR << " Rovers in Maintenance ";
+	
+	}
 	if (Rovers.isEmpty())
 	{
 		cout << "[ ] ( ) { } ";
@@ -418,19 +446,19 @@ void UI::PrintComplete(Queue<Mission> CompletedMissions)
 	while (!CompletedMissions.isEmpty())
 	{
 		CompletedMissions.dequeue(MissionNode);
-		if (MissionNode->getData()->getMissionType() == 'E')
+		if (MissionNode->getData()->getMissionType() == 'E' && MissionNode->getData()->getCD()==pMars->GetDay())
 		{
-			CountE++;
+			CountE++;//extra ??
 			CountComp++;
 			Emerge.enqueue(MissionNode->getData());
 		}
-		else if (MissionNode->getData()->getMissionType() == 'P')
+		else if (MissionNode->getData()->getMissionType() == 'P' && MissionNode->getData()->getCD() == pMars->GetDay())
 		{
 			CountP++;
 			CountComp++;
 			Polar.enqueue(MissionNode->getData());
 		}
-		else if (MissionNode->getData()->getMissionType() == 'M')
+		else if (MissionNode->getData()->getMissionType() == 'M' && MissionNode->getData()->getCD() == pMars->GetDay())
 		{
 			CountM++;
 			CountComp++;
@@ -444,7 +472,8 @@ void UI::PrintComplete(Queue<Mission> CompletedMissions)
 	while (!Emerge.isEmpty())
 	{
 		Emerge.dequeue(MissionNode);
-		cout << MissionNode->getData()->getID()  << ", ";
+		if(MissionNode->getData()->getCD()==pMars->GetDay())
+			cout << MissionNode->getData()->getID()  << ", ";
 
 	}
 	cout << "\b\b  ] ";
@@ -453,7 +482,8 @@ void UI::PrintComplete(Queue<Mission> CompletedMissions)
 	while (!Polar.isEmpty())
 	{
 		Polar.dequeue(MissionNode);
-		cout << MissionNode->getData()->getID() <<", ";
+		if (MissionNode->getData()->getCD() == pMars->GetDay())
+			cout << MissionNode->getData()->getID() <<", ";
 
 	}
 	cout << "\b\b  ) ";
@@ -463,7 +493,8 @@ void UI::PrintComplete(Queue<Mission> CompletedMissions)
 	while (!Mount.isEmpty())
 	{
 		Mount.dequeue(MissionNode);
-		cout << MissionNode->getData()->getID()  << ", ";
+		if (MissionNode->getData()->getCD() == pMars->GetDay())
+			cout << MissionNode->getData()->getID()  << ", ";
 	}
 	cout << "\b\b  } ";
 
@@ -472,11 +503,12 @@ void UI::PrintComplete(Queue<Mission> CompletedMissions)
 	cout << "--------------------------------------" << endl;
 }
 
-void UI::Mode(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar, PriQ<Mission> InExecution,PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM, Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInCheckUpP, Queue<Rover> RoversInCheckUpM, Queue<Mission> CompletedMissions)
+void UI::Mode(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar, PriQ<Mission> InExecution,PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM,PriQ<Rover> AvaiableRoversEM, PriQ<Rover> AvaiableRoversPM, PriQ<Rover> AvaiableRoversMM, Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInCheckUpP, Queue<Rover> RoversInCheckUpM, Queue<Mission> CompletedMissions)
 {
 	PrintWait(Emergency, MountainousSort, Polar);
 	PrintInExecution(InExecution);
-	PrintAvRovers(AvaiableRoversE, AvaiableRoversP, AvaiableRoversM);
+	PrintAvRovers(AvaiableRoversE, AvaiableRoversP, AvaiableRoversM,'A');
+	PrintAvRovers(AvaiableRoversEM, AvaiableRoversPM, AvaiableRoversMM, 'M');
 	PrintInCheckUp(RoversInCheckUpE, RoversInCheckUpP, RoversInCheckUpM);
 	PrintComplete(CompletedMissions);
 	cout << "======================= New Day ======================" << endl;
@@ -489,4 +521,13 @@ void UI::SilentMode()
 {
 	cout << "Silent Mode \nSimulation Starts... \nSimulation ends, Output file created" << endl;
 		
+}
+
+char UI::getMode()
+{
+	return mode;
+}
+void UI::setMode(char choice)
+{
+	mode = choice;
 }

@@ -149,36 +149,59 @@ void MarsStation::checkInMain()
 		}
 
 	}
-	
+
 }
 
 void MarsStation::MoveToAvailRover()
 {
 	Node<Rover>* tempNode;
 	Rover* tempR;
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 6; i++)
 	{
-		while (!RoversInCheckUp[i].isEmpty())
+		if (i < 3)
 		{
-			tempNode = NULL;
-			RoversInCheckUp[i].peek(tempNode);
-			if (tempNode)
-				tempR = tempNode->getData();
-			else
-				break;
-			if (tempNode && tempR->moveToAvail(day))
+			while (!RoversInCheckUp[i].isEmpty())
 			{
-				if (i > 2)
-					tempR->resetMaintain();
-				AvaiableRovers[i].enqueue(tempR, tempR->getSpeed());
-				RoversInCheckUp[i].dequeue(tempNode);
+				tempNode = NULL;
+				RoversInCheckUp[i].peek(tempNode);
+				if (tempNode)
+					tempR = tempNode->getData();
+				else
+					break;
+				if (tempNode && tempR->moveToAvail(day))
+				{
+					if (i > 2)
+						tempR->resetMaintain();
+					AvaiableRovers[i].enqueue(tempR, -tempR->getSpeed());
+					RoversInCheckUp[i].dequeue(tempNode);
+				}
+				else
+					break;
 			}
-			else
-				break;
-
 		}
-	}
+		else
+		{
+			while (!AvaiableRovers[i].isEmpty())
+			{
+				tempNode = NULL;
+				AvaiableRovers[i].peek(tempNode);
+				if (tempNode)
+					tempR = tempNode->getData();
+				else
+					break;
+				if (tempNode && tempR->moveToAvail(day))
+				{
+					if (i > 2)
+						tempR->resetMaintain();
+					AvaiableRovers[i - 3].enqueue(tempR, -tempR->getSpeed());
+					AvaiableRovers[i].dequeue(tempNode);
+				}
+				else
+					break;
+			}
+		}
 
+	}
 }
 void MarsStation::MoveRover(Mission* tempM)
 {
@@ -216,15 +239,19 @@ void MarsStation::Execute()
 	UI input(this);
 	UI output(this);
 	ifstream InFile;
-	InFile.open("TEST.txt");
+	InFile.open("TEST6.txt");
 	input.Read(InFile, EventList);
-	char Choice;
+	char Choice = input.getMode();
 
-	cout << "Select Mode:" << endl;
-	cout << "i for interactive, s for Step-By-Step, x for Silent " << endl;
-	cin >> Choice;
-	if (Choice == 'i')
-		cout << "Press enter to proceed" << endl;
+	//cout << "Select Mode:" << endl;
+	//cout << "i for interactive, s for Step-By-Step, x for Silent " << endl;
+	//cin >> Choice;
+	//if (Choice == 'i')
+	//cout << "Press enter to proceed" << endl;
+	if (AvaiableRovers[0].isEmpty() && AvaiableRovers[1].isEmpty() && AvaiableRovers[2].isEmpty())
+	{
+		return;
+	}
 
 	while (!EventList.isEmpty() || !InExecution.isEmpty() || !MountainousOrder.isEmpty() || !PolarMissions.isEmpty() || !EmeregncyMissions.isEmpty())
 	{
@@ -250,24 +277,26 @@ void MarsStation::Execute()
 		MoveToExec();
 		MoveToCompMissions();
 		MoveToAvailRover();
-	//checkInMain();
+		//checkInMain();
 		AutoPromote();
+
 
 		if (Choice == 'i')
 		{
 			cin.ignore();
 
-			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
+			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], AvaiableRovers[3], AvaiableRovers[4], AvaiableRovers[5], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
 		}
 		else if (Choice == 's')
 		{
 			//for (int i = 0; i < 1000000000; i++)
 			//{
 				//i++;
-			//} // AMIN AL M3AFEN
-			Sleep(1000); // included <windows.h> // AMIN AL NDYF
-			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
+			//} 
+			Sleep(1000); // included <windows.h> 
+			output.Mode(EmeregncyMissions, MountainousOrder, PolarMissions, InExecution, AvaiableRovers[0], AvaiableRovers[1], AvaiableRovers[2], AvaiableRovers[3], AvaiableRovers[4], AvaiableRovers[5], RoversInCheckUp[0], RoversInCheckUp[1], RoversInCheckUp[2], CompletedMissions);
 		}
+
 
 		day++;
 
@@ -276,12 +305,12 @@ void MarsStation::Execute()
 	{
 		output.SilentMode();
 	}
-	
+
 	NumberOfExec /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
 	NumberOfWait /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
 
 	ofstream OutFile;
 	OutFile.open("OutputFile.txt");
-	output.Write(OutFile,CompletedMissions,StatsArr);
+	output.Write(OutFile, CompletedMissions, StatsArr);
 
 }
