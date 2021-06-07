@@ -126,21 +126,25 @@ void MarsStation::MoveToCompMissions()
 
 void MarsStation::checkInMain()
 {
+	/*Generating random number for maintenance*/
 	int i = rand() % 101;
-	// nezbat el range.
 	if (i >= 15 && i <= 35)
 	{
+		/*Probability for the type of rover entering the maintenance*/
 		int j = rand() % 3;
 		Node<Rover>* tempNode = NULL;
 		Rover* tempRover;
 		AvaiableRovers[j].dequeue(tempNode);
+		/*Checking if the randomized type is available in the available rovers*/
 		if (tempNode)
 		{
 			tempRover = tempNode->getData();
+			/*If the rover just got out of check up fa msh hy5osh 3shan msh na2sa 8aba2 hy5osh mrtyn leh y3ny !!!!!*/
 			if (tempRover->getMissionCountMain() != 0)
 			{
 				tempRover->setMaintain();
 				tempRover->setCheckUpEnter(day);
+				/* (j+3) are the rovers of the same type*/
 				AvaiableRovers[j + 3].enqueue(tempRover, (day + tempRover->getCheckUpDuration()));
 			}
 			else

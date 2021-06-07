@@ -8,11 +8,11 @@ void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, i
 	Mission* tempMission;
 	int cDay;
 	PriQ<Mission> tempPriQ;
+	/*Checking if the waiting emergency missions is not empty*/
 	if (!Emergency.isEmpty())
 	{
 		Emergency.dequeue(tempNode);
 		tempMission = tempNode->getData();
-		//tempPriQ.enqueue(tempMission, tempNode->getKey());
 		cDay = tempMission->getFormulationDate();
 		if (cDay > d)
 		{
@@ -21,9 +21,11 @@ void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, i
 		}
 		else
 		{
+			/*Checking if the day of the formulation is smaller than or equal the current day*/
 			while (cDay <= d)
 			{
 				bool test = assignRover_E(roverArray, tempMission);
+				/*Checking if there is available rover to be assigned to the waiting missions*/
 				if (test && tempNode)
 				{
 					tempPriQ.enqueue(tempMission, tempNode->getKey());
@@ -37,6 +39,7 @@ void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, i
 					}
 
 				}
+				/*If there is no mission to assign then increment the waiting days*/
 				else
 				{
 					tempMission->increamentWaitingDays();
@@ -46,7 +49,8 @@ void Action::checkWaiting_E(PriQ<Mission>& Emergency, PriQ<Rover>* roverArray, i
 				}
 
 			}
-		}
+		}		
+		/*Incrementing the rest of the missions in the waiting*/
 		while (Emergency.dequeue(tempNode))
 		{
 			tempMission = tempNode->getData();
@@ -73,6 +77,7 @@ void Action::checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int 
 		Polar.dequeue(tempNode);
 		tempMission = tempNode->getData();
 		cDay = tempMission->getFormulationDate();
+		/*Checking if the day of the formulation is smaller than or equal the current day*/
 		if (cDay > d)
 		{
 			tempQ.enqueue(tempMission);
@@ -82,6 +87,7 @@ void Action::checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int 
 			while (cDay <= d)
 			{
 				bool test = assignRover_P(roverArray, tempMission);
+				/*Checking if there is available rover to be assigned to the waiting missions*/
 				if (test && tempNode)
 				{
 					tempQ.enqueue(tempMission);
@@ -95,6 +101,7 @@ void Action::checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int 
 					}
 
 				}
+				/*If there is no mission to assign then increment the waiting days*/
 				else
 				{
 					tempMission->increamentWaitingDays();
@@ -106,6 +113,7 @@ void Action::checkWaiting_P(Queue<Mission>& Polar, PriQ<Rover>* roverArray, int 
 			}
 		}
 	}
+	/*Incrementing the rest of the missions in the waiting*/
 	while (Polar.dequeue(tempNode))
 	{
 		tempMission = tempNode->getData();
@@ -137,6 +145,7 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 		{
 			tempMission = tempNode->getData();
 			cDay = tempMission->getFormulationDate();
+			/*Checking if the day of the formulation is smaller than or equal the current day*/
 			if (cDay > d)
 			{
 				tempQ.enqueue((key->getData()));
@@ -148,6 +157,7 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 				while (cDay <= d)
 				{
 					bool test = assignRover_M(roverArray, tempMission);
+					/*Checking if there is available rover to be assigned to the waiting missions*/
 					if (test && tempNode)
 					{
 						tempQ.enqueue((key->getData()));
@@ -165,6 +175,7 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 
 					}
 					else
+					/*If there is no mission to assign then increment the waiting days*/
 					{
 						tempMission->increamentWaitingDays();
 						tempQ.enqueue((key->getData()));
@@ -177,6 +188,7 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 			}
 		}
 	}
+	/*Incrementing the rest of the missions in the waiting*/
 	while (MountainousSort.dequeue(key))
 	{
 		Mountainous.remove(tempNode, *(key->getData()));
@@ -194,14 +206,12 @@ void Action::checkWaiting_M(HashTable<Mission>& Mountainous, Queue<int>& Mountai
 }
 
 
-// without maintainance
 bool Action::assignRover_E(PriQ<Rover>* roverArray, Mission*& tempMission, char type)
 {
 	Node<Rover>* tempNode;
 	bool test = roverArray[0].dequeue(tempNode);
 	if (test)
 	{
-		// nen2el eel rover
 		tempMission->setRover(tempNode->getData());
 		tempNode->getData()->increamentMissionCount();
 		return test;
@@ -216,20 +226,19 @@ bool Action::assignRover_E(PriQ<Rover>* roverArray, Mission*& tempMission, char 
 		test = roverArray[3].dequeue(tempNode);
 		if (test)
 		{
-			// nen2el eel rover
 			tempMission->setRover(tempNode->getData());
 			tempNode->getData()->increamentMissionCount();
 		}
 	}
 	return test;
 }
+
 bool Action::assignRover_P(PriQ<Rover>* roverArray, Mission*& tempMission)
 {
 	Node<Rover>* tempNode;
 	bool test = roverArray[1].dequeue(tempNode);
 	if (test)
 	{
-		// nen2el eel rover
 		tempMission->setRover(tempNode->getData());
 		tempNode->getData()->increamentMissionCount();
 
@@ -239,7 +248,6 @@ bool Action::assignRover_P(PriQ<Rover>* roverArray, Mission*& tempMission)
 		test = roverArray[4].dequeue(tempNode);
 		if (test)
 		{
-			// nen2el eel rover
 			tempMission->setRover(tempNode->getData());
 			tempNode->getData()->increamentMissionCount();
 		}
@@ -247,13 +255,13 @@ bool Action::assignRover_P(PriQ<Rover>* roverArray, Mission*& tempMission)
 	return test;
 
 }
+
 bool Action::assignRover_M(PriQ<Rover>* roverArray, Mission*& tempMission)
 {
 	Node<Rover>* tempNode;
 	bool test = roverArray[2].dequeue(tempNode);
 	if (test)
 	{
-		// nen2el eel rover
 		tempMission->setRover(tempNode->getData());
 		tempNode->getData()->increamentMissionCount();
 		return test;
@@ -264,7 +272,6 @@ bool Action::assignRover_M(PriQ<Rover>* roverArray, Mission*& tempMission)
 		test = roverArray[5].dequeue(tempNode);
 		if (test)
 		{
-			// nen2el eel rover
 			tempMission->setRover(tempNode->getData());
 			tempNode->getData()->increamentMissionCount();
 		}
@@ -308,6 +315,7 @@ void Action::MoveToExec_M(HashTable<Mission>& Mountainous, Queue<int>& Mountaino
 	}
 
 }
+
 void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution, float& Exec, float& Wait)
 {
 	Node<Mission>* tempNode;
@@ -334,6 +342,7 @@ void Action::MoveToExec_P(Queue<Mission>& Polar, PriQ<Mission>& InExecution, flo
 	}
 
 }
+
 void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution, float& Exec, float& Wait)
 {
 	Node<Mission>* tempNode;
@@ -359,6 +368,7 @@ void Action::MoveToExec_E(PriQ<Mission>& Emergency, PriQ<Mission>& InExecution, 
 
 	}
 }
+
 void Action::AutoPromote(HashTable<Mission>& Mountainous, Queue<int>& MountainousSort, PriQ<Mission>& Emergency, int AutoPro,int*StatsArr)
 {
 	Node<Mission>* tempNode = NULL;
