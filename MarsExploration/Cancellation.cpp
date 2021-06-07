@@ -12,13 +12,8 @@ void Cancellation::Execute(HashTable<Mission>& Mountainous, PriQ<Mission>& Emerg
 	removed=Mountainous.remove(NodeToRemove,MissionID);
 	if (removed)
 	{
-	//	delete NodeToRemove;
-	//	delete MissionToRemove;
 		Arr[5]--;
 	}
-	
-	
 	delete NodeToRemove;
 	delete MissionToRemove;
-	
 }

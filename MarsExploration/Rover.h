@@ -13,12 +13,12 @@ private:
 	bool InMaintainance;
 	int checkUpEnter;
 	int NumBeforeCheck;
-	//bool available;
 
 public:
 	/* Constructor */
 	Rover(char roverType,int checkUpDuration, int speed, int NumBeforeCheck);
 
+	/*Setters and getters for the all rovers' info*/
 	void setRoverType(char);
 	char getRoverType();
 
@@ -39,11 +39,8 @@ public:
 	int getID();
 	void setID(int);
 
-
 	int getMissionCountMain();
 	void setCheckUpEnter(int d);
 
 	bool getInMain();
-
-
 };

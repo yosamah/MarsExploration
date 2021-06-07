@@ -18,7 +18,10 @@ public:
 	
 	/* Constructor */
 	Event(int, int);
-	int getED();//get event date
+
+	/*get event date*/
+	int getED();
+
 	/* Check and execute to create mission and add it to the appropriate list */
 	virtual void Execute(HashTable<Mission>& Mountainous, PriQ<Mission>& Emergency, Queue<int>& MountainousSort, Queue<Mission>& Polar,int * Arr) = 0;  //Mtnsosh fi al call t7oto "&"
 };

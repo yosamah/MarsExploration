@@ -9,10 +9,9 @@
 UI::UI(MarsStation* Mars)
 {
 	pMars = Mars;
-	//mode = 'n';
 }
 
-void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eof()
+void UI::Read(ifstream& file, Queue<Event>& eventList)
 {
 	char Choice;
 	cout << "Select Mode:" << endl;
@@ -20,9 +19,7 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 	cin >> Choice;
 	setMode(Choice);
 	if (Choice == 'i')
-		cout << "Press enter to proceed" << endl;
-	/*Checking character*/
-	
+		cout << "Press enter to proceed" << endl;	
 
 	/*The type of each rover*/
 	int NumOfPolarRover;
@@ -82,6 +79,7 @@ void UI::Read(ifstream& file, Queue<Event>& eventList)  //file.close() //file.eo
 			file >> MissionType;
 			file >> ED >> ID >> Location >> MDUR >> Signif;
 
+			/*Checking if the number of rovers equals zero so the mission wont be formulated*/
 			if (NumOfPolarRover != 0 && MissionType == 'P')
 			{
 				Formulation* F = new Formulation(MissionType, Location, MDUR, Signif, ID, ED);
@@ -123,12 +121,14 @@ void UI::Write(ofstream& file, Queue<Mission> CompletedMissions, int* StatsArr)
 	Queue<int> Temp;
 	Node<Mission>* TempMission;
 
+	/*Looping on the completed mission list to print their info*/
 	while (!CompletedMissions.isEmpty())
 	{
 		CompletedMissions.dequeue(TempMission);
 
 		file << TempMission->getData()->getCD() << "\t" << TempMission->getData()->getID() << "\t" << TempMission->getData()->getFormulationDate() << "\t" << TempMission->getData()->getTotalMissionDur() << "\t" << TempMission->getData()->getED() << endl;
 	}
+	/*Printing the rest of the info*/
 	file << "Missions: " << StatsArr[3] + StatsArr[4] + StatsArr[5] << " [M: " << StatsArr[5] << ", P: " << StatsArr[4] << ", E: " << StatsArr[3] << "]\n";
 	file << "Rovers: " << StatsArr[0] + StatsArr[1] + StatsArr[2] << " [M: " << StatsArr[2] << ", P: " << StatsArr[1] << ", E: " << StatsArr[0] << "]\n";
 	file << "Avg Wait = " << pMars->GetAvgWaitDays() << ", " << "Avg Exec = " << pMars->GetAvgExecDays() << endl;
@@ -148,7 +148,8 @@ void UI::PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mi
 	Node<int>* TempID;
 	Node<Mission>* TempMission;
 	int TempInt;
-	
+
+	/*Collecting the lists into a queue to print them in order*/
 	while (!MountainousSort.isEmpty())
 	{
 		MountainousSort.dequeue(TempID);
@@ -175,10 +176,12 @@ void UI::PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mi
 
 	cout << "Current Day: " << pMars->GetDay() << endl;
 	cout << CountW << " Waiting Missions: ";
+	/*Chechking if all the lists are empty*/
 	if (TempM.isEmpty() && TempEP.isEmpty())
 	{
 		cout << "[ ] ( ) { } ";
 	}
+	/*Printing each list in order*/
 	while (!TempEP.isEmpty())
 	{
 		cout << "[ ";
@@ -223,6 +226,7 @@ void UI::PrintInExecution(PriQ<Mission> InExecution)
 	Queue<Mission> Mount;
 	Queue<Mission> Polar;
 	Node<Mission>* MissionNode;
+	/*Dividing the in execution list into 3 list to print each in order*/
 	while (!InExecution.isEmpty())
 	{
 		InExecution.dequeue(MissionNode);
@@ -244,12 +248,10 @@ void UI::PrintInExecution(PriQ<Mission> InExecution)
 			CountInEx++;
 			Mount.enqueue(MissionNode->getData());
 		}
-	
-		
-
 	}
 	cout << CountInEx << " In-Execution Missions/Rovers: ";
 
+	/*Printing all the missions in order*/
 	cout << "[  ";
 	while (!Emerge.isEmpty())
 	{
@@ -289,11 +291,10 @@ void UI::PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP,
 	int CountP = 0;
 	int CountE = 0;
 
-
 	Queue<Rover> Rovers;
 	Node<Rover>* Temp;
 
-
+	/*The Getting the available rovers list into one list in order for printing*/
 	while (!AvaiableRoversE.isEmpty())
 	{
 		AvaiableRoversE.dequeue(Temp);
@@ -315,6 +316,7 @@ void UI::PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP,
 		CountM++;
 		CountR++;
 	}
+	/*Checking whether to print the available rovers or the rovers in maintenance*/
 	if (c == 'A')
 	{
 		cout << CountR << " Available Rovers: ";
@@ -324,6 +326,8 @@ void UI::PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP,
 		cout << CountR << " Rovers in Maintenance ";
 	
 	}
+
+	/*Printing the information of the rovers available/Maintenance*/
 	if (Rovers.isEmpty())
 	{
 		cout << "[ ] ( ) { } ";
@@ -356,8 +360,6 @@ void UI::PrintAvRovers(PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP,
 	}
 	cout << endl;
 	cout << "--------------------------------------" << endl;
-
-
 }
 
 void UI::PrintInCheckUp(Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInCheckUpP, Queue<Rover> RoversInCheckUpM)
@@ -366,12 +368,11 @@ void UI::PrintInCheckUp(Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInChec
 	int CountM = 0;
 	int CountP = 0;
 	int CountE = 0;
-
-
+	
 	Queue<Rover> CheckRovers;
 	Node<Rover>* Temp;
 
-
+	/*The Getting the checkup rovers list into one list in order for printing*/
 	while (!RoversInCheckUpE.isEmpty())
 	{
 		RoversInCheckUpE.dequeue(Temp);
@@ -393,6 +394,8 @@ void UI::PrintInCheckUp(Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInChec
 		CountM++;
 		CountC++;
 	}
+
+	/*Printing the information of the check up rovers*/
 	cout << CountC << " In-Checkup Rovers: ";
 	if (CheckRovers.isEmpty())
 	{
@@ -443,12 +446,15 @@ void UI::PrintComplete(Queue<Mission> CompletedMissions)
 	Queue<Mission> Mount;
 	Queue<Mission> Polar;
 	Node<Mission>* MissionNode;
+
+	/*The Getting the completed mission list into one list in order for printing*/
 	while (!CompletedMissions.isEmpty())
 	{
 		CompletedMissions.dequeue(MissionNode);
+		/*Checking the current to print the completed missions in this day only*/
 		if (MissionNode->getData()->getMissionType() == 'E' && MissionNode->getData()->getCD()==pMars->GetDay())
 		{
-			CountE++;//extra ??
+			CountE++;
 			CountComp++;
 			Emerge.enqueue(MissionNode->getData());
 		}
@@ -466,6 +472,8 @@ void UI::PrintComplete(Queue<Mission> CompletedMissions)
 		}
 
 	}
+
+	/*Printing the information of the completed missions*/
 	cout << CountComp << " Completed Missions: ";
 
 	cout << "[  ";
@@ -505,6 +513,7 @@ void UI::PrintComplete(Queue<Mission> CompletedMissions)
 
 void UI::Mode(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission> Polar, PriQ<Mission> InExecution,PriQ<Rover> AvaiableRoversE, PriQ<Rover> AvaiableRoversP, PriQ<Rover> AvaiableRoversM,PriQ<Rover> AvaiableRoversEM, PriQ<Rover> AvaiableRoversPM, PriQ<Rover> AvaiableRoversMM, Queue<Rover> RoversInCheckUpE, Queue<Rover> RoversInCheckUpP, Queue<Rover> RoversInCheckUpM, Queue<Mission> CompletedMissions)
 {
+	/*Calling each printing function to print in the console each line*/
 	PrintWait(Emergency, MountainousSort, Polar);
 	PrintInExecution(InExecution);
 	PrintAvRovers(AvaiableRoversE, AvaiableRoversP, AvaiableRoversM,'A');
@@ -512,17 +521,15 @@ void UI::Mode(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mission
 	PrintInCheckUp(RoversInCheckUpE, RoversInCheckUpP, RoversInCheckUpM);
 	PrintComplete(CompletedMissions);
 	cout << "======================= New Day ======================" << endl;
-	//we might need 5 functions for each line in the interactive mode
-	// we did in deeddd
-
-
 }
+
 void UI::SilentMode()
 {
 	cout << "Silent Mode \nSimulation Starts... \nSimulation ends, Output file created" << endl;
 		
 }
 
+/*Setter and getter for the mode*/
 char UI::getMode()
 {
 	return mode;
