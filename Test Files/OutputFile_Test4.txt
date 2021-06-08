@@ -1,0 +1,14 @@
+CD	ID	FD	WD	ED
+10	1	2	8	8
+37	3	5	26	26
+38	2	5	14	14
+75	5	18	27	27
+Missions: 4 [M: 1, P: 0, E: 3]
+Rovers: 1 [M: 1, P: 0, E: 0]
+Avg Wait = 13.75, Avg Exec = 18.75
+Auto-promoted: 50%
+
+comment:
+
+//used only one mountainuous rover with low speed.
+//no formulated polar missions 

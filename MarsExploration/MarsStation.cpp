@@ -35,6 +35,10 @@ float MarsStation::GetAvgWaitDays() //Should be used after all loops (calculatio
 }
 float MarsStation::GetAutoPromotedPercent()
 {
+	if (StatsArr[5] == 0)
+	{
+		return 0;
+	}
 	return (((float)StatsArr[6] / ((float)StatsArr[6] + (float)StatsArr[5]))) * 100;
 }
 
@@ -251,7 +255,7 @@ void MarsStation::Execute()
 	UI input(this);
 	UI output(this);
 	ifstream InFile;
-	InFile.open("TEST6.txt");
+	InFile.open("TEST.txt");
 	input.Read(InFile, EventList);
 	char Choice = input.getMode();
 
@@ -304,10 +308,16 @@ void MarsStation::Execute()
 	{
 		output.SilentMode();
 	}
-
-	NumberOfExec /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
-	NumberOfWait /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
-
+	if (StatsArr[3] == 0 && StatsArr[4] == 0 && StatsArr[5] == 0)
+	{
+		NumberOfExec = 0;
+		NumberOfWait = 0;
+	}
+	else
+	{
+		NumberOfExec /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
+		NumberOfWait /= (StatsArr[3] + StatsArr[4] + StatsArr[5]);
+	}
 	ofstream OutFile;
 	OutFile.open("OutputFile.txt");
 	output.Write(OutFile, CompletedMissions, StatsArr);

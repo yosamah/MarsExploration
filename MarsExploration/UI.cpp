@@ -180,6 +180,13 @@ void UI::PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mi
 	if (TempM.isEmpty() && TempEP.isEmpty())
 	{
 		cout << "[ ] ( ) { } ";
+		cout << endl;
+		cout << "--------------------------------------" << endl;
+		return;
+	}
+	if (!TempM.isEmpty() && TempEP.isEmpty())
+	{
+		cout << "[ ] ( ) ";
 	}
 	/*Printing each list in order*/
 	while (!TempEP.isEmpty())
@@ -201,15 +208,21 @@ void UI::PrintWait(PriQ<Mission> Emergency, Queue<int> MountainousSort, Queue<Mi
 		cout << "\b )" << "  ";
 		
 	}
-	cout << "{ ";
-	for (int i = 0; i < CountM; i++)
+	if (!TempM.isEmpty())
 	{
-		TempM.dequeue(TempID);
-		int* ids = TempID->getData();
-		cout << (*ids) << ",";
+		cout << "{ ";
+		for (int i = 0; i < CountM; i++)
+		{
+			TempM.dequeue(TempID);
+			int* ids = TempID->getData();
+			cout << (*ids) << ",";
+		}
+		cout << "\b }";
 	}
-	cout << "\b }";
-
+	else 
+	{
+		cout << "{ }";
+	}
 	cout << endl;
 	cout << "--------------------------------------" << endl;
 }
