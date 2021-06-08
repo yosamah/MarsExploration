@@ -3,3 +3,6 @@ Missions: 0 [M: 0, P: 0, E: 0]
 Rovers: 8 [M: 3, P: 3, E: 2]
 Avg Wait = 0, Avg Exec = 0
 Auto-promoted: 0%
+
+Comment:
+//Entered events is zero
